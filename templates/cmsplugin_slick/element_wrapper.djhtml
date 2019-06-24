@@ -1,0 +1,12 @@
+{% load cms_tags sekizai_tags staticfiles %}
+
+<div id="slick-slide-wrapper-{{ instance.id }}" class="slick-slide-wrapper {{ instance.classes }}">
+    {% for plugin in instance.child_plugin_instances %}
+        {% render_plugin plugin %}
+    {% endfor %}
+    {% if instance.caption %}
+        <div class="slick-slide-caption">
+            <h4>{{ instance.caption }}</h4>
+        </div>
+    {% endif %}
+</div>

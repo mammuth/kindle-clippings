@@ -1,0 +1,16 @@
+{% for image in folder_images %}
+    <div class="slick-slide-wrapper {{ instance.classes }}">
+        {%  if instance.original_link %}
+            <a href="{{ image.url }}" {% if instance.target_blank %}target="_blank"{% endif %}>
+                {% include "cmsplugin_slick/includes/image_slide.djhtml" %}
+            </a>
+        {% else %}
+            {% include "cmsplugin_slick/includes/image_slide.djhtml" %}
+        {% endif %}
+        {% if instance.caption %}
+            <div class="slick-slide-caption">
+                <h4>{% if image.default_caption %}{{ image.default_caption }}{% else %}{{ image }}{% endif %}</h4>
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}

@@ -1,0 +1,25 @@
+{% load cms_tags sekizai_tags staticfiles %}
+
+<div id="carousel-slick-{{ instance.id }}" class="carousel-slick {{ instance.classes }} slick-outwards">
+    {% for plugin in instance.child_plugin_instances %}
+        {% render_plugin plugin %}
+    {% endfor %}
+</div>
+
+{% addtoblock 'css' %}<link rel="stylesheet" href='{{ slick_static_path }}/slick.css'>{% endaddtoblock %}
+{% if instance.slick_preset.use_theme %}
+    {% if instance.slick_preset.slick_theme %}
+        {% addtoblock 'css' %}<link rel="stylesheet" href='{{ instance.slick_preset.slick_theme.url }}'>{% endaddtoblock %}
+    {% else %}
+        {% addtoblock 'css' %}<link rel="stylesheet" href='{{ slick_static_path }}/slick-theme.css'>{% endaddtoblock %}
+    {% endif %}
+{% endif %}
+
+{% addtoblock 'js' %}
+    <script type="text/javascript" src='{{ slick_static_path }}/slick.min.js'></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#carousel-slick-{{ instance.id }}').slick({{ slick_settings|safe }});
+        });
+    </script>
+{% endaddtoblock %}
