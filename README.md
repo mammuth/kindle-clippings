@@ -17,3 +17,4 @@ This is a pretty simple django application with a good'ol HTML frontend generate
 ## Roadmap
 - Restful API for retrieving ones notes
 - Export in various formats
+- Customizable the New Tab page
