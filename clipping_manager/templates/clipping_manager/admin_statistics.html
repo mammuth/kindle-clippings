@@ -3,19 +3,27 @@
 {% block content %}
     <div class="row">
         <div class="col-12 col-md-4 mb-4">
-            <h4>{{ user_count }}</h4>
-            <span>Users</span>
+            <div class="d-flex">
+                <div class="flex-fill">
+                    <h4>{{ user_count }}</h4>
+                    <span>Users</span>
+                </div>
 
-            <h4 class="mt-4">{{ clippings_count }}</h4>
-            <span>Clippings</span>
+                <div class="flex-fill">
+                    <h4>{{ clippings_count }}</h4>
+                    <span>Clippings</span>
+                </div>
 
-            <h4 class="mt-4">{{ books_count }}</h4>
-            <span>Books</span>
+                <div class="flex-fill">
+                    <h4>{{ books_count }}</h4>
+                    <span>Books</span>
+                </div>
+            </div>
         </div>
         <div class="col">
             <h4>Top Users</h4>
             {% for tuple in user_clippings_tuple %}
-               {{ tuple.email }}: {{ tuple.clippings__count }}<br />
+                {{ tuple.email }}: {{ tuple.clippings__count }}<br/>
             {% endfor %}
         </div>
     </div>
