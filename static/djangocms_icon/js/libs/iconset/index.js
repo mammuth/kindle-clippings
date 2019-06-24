@@ -1,0 +1,14 @@
+import './iconset-elusiveicon-all';
+import './iconset-flagicon-all';
+import './iconset-fontawesome-4-all';
+import './iconset-fontawesome-5-brands';
+import './iconset-fontawesome-5-light';
+import './iconset-fontawesome-5-regular';
+import './iconset-fontawesome-5-solid';
+import './iconset-glyphicon-all';
+import './iconset-ionicon-all';
+import './iconset-mapicon-all';
+import './iconset-materialdesign-all';
+import './iconset-octicon-all';
+import './iconset-typicon-all';
+import './iconset-weathericon-all';
