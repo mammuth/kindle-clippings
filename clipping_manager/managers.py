@@ -11,8 +11,8 @@ class ClippingQuerySetManager(models.QuerySet):
 
     def random(self):
         count = self.aggregate(count=Count('id'))['count']
-        random_index = randint(0, count - 1)
         try:
+            random_index = randint(0, count - 1)
             clip = self.all()[random_index]
         except ValueError:
             return self.none()
