@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 
-{% block head %}
-    {% if refresh %}
-        <meta http-equiv="refresh" content="{{ refresh }}" />
-    {% endif %}
-{% endblock %}
 
 {% block main %}
     <div class="row align-items-center new-tab-container">
@@ -15,4 +10,11 @@
             </div>
         </div>
     </div>
+    <script>
+        var url = new URL(window.location.href);
+        var refreshValue = url.searchParams.get("refresh");
+        if (refreshValue !== null && parseInt(refreshValue)) {
+            setTimeout('window.location.href=window.location.href;', parseInt(refreshValue)*1000);
+        }
+    </script>
 {% endblock %}
