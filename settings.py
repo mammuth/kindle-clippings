@@ -51,7 +51,7 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 CMS_TEMPLATES = (
-    ## Customize this
+    ('content.html', 'Content'),
     ('fullwidth.html', 'Fullwidth'),
     ('sidebar.html', 'Sidebar'),
 )
