@@ -3,11 +3,13 @@
 
 https://reading-notes.com
 
-**Browser New Tab Page**
+**Browser New Tab Page or page for wallmounted displays**
 
 Get a random quote from your favourite books whenever you open a new tab!
 
 ![macbook_design_mockup png__2253x1481_q90_subsampling-2](https://user-images.githubusercontent.com/3121306/60038724-5f157700-96b5-11e9-8e2d-a490112119ef.png)
+
+It's also possible to load a new quoet every X seconds.
 
 ## Contribute
 Feel free to open issues or PRs!
