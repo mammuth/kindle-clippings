@@ -77,6 +77,11 @@ class RandomClippingView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(RandomClippingView, self).get_context_data(**kwargs)
         ctx['clipping'] = self.clipping
+        if self.request.GET.get('refresh', None):
+            try:
+                ctx['refresh'] = int(self.request.GET.get('refresh'))
+            except Exception:
+                pass
         return ctx
 
 

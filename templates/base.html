@@ -17,8 +17,25 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static "img/favicon-32x32.png" %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static "img/favicon-16x16.png" %}">
 
+    {% block head %}{% endblock %}
+
     {% render_block "css" %}
     {{ ALDRYN_SNAKE.render_head }}
+
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43065633-23"></script>
+      <script>
+          window.dataLayer = window.dataLayer || [];
+
+          function gtag() {
+              dataLayer.push(arguments);
+          }
+
+          gtag('js', new Date());
+
+          gtag('config', 'UA-43065633-23');
+      </script>
+
   </head>
   <body>
     {% cms_toolbar %}

@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block head %}
+    {% if refresh %}
+        <meta http-equiv="refresh" content="{{ refresh }}" />
+    {% endif %}
+{% endblock %}
+
 {% block main %}
     <div class="row align-items-center new-tab-container">
         <div class="container">
