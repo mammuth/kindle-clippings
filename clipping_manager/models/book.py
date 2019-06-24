@@ -18,7 +18,7 @@ class Book(models.Model):
 
     title = models.CharField(
         verbose_name=_('Title'),
-        max_length=100,
+        max_length=500,
         blank=False,
     )
 
