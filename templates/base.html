@@ -45,24 +45,24 @@
     </nav>
     {% endblock %}
 
-    {% block main %}
-    <div class="container py-3">
-        {% block messages %}
-            {% if messages %}
-                <div class="messages">
+    {% block messages %}
+        {% if messages %}
+            <div class="messages container py-3">
                 {% for message in messages %}
-                    <div class="alert {% if 'error' in message.tags %} alert-danger {% elif 'success' in message.tags %} alert-success {% elif 'warning' in message.tags %} alert-warning {% endif %}" role="alert">
+                    <div class="alert {% if 'error' in message.tags %} alert-danger {% elif 'success' in message.tags %} alert-success {% elif 'warning' in message.tags %} alert-warning {% endif %}"
+                         role="alert">
                         {{ message }}
                     </div>
                 {% endfor %}
-                </div>
-            {% endif %}
-        {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
 
-        {% block content %}
-        {% endblock %}
-
-    </div>
+    {% block main %}
+        <div class="container py-3">
+            {% block content %}
+            {% endblock %}
+        </div>
     {% endblock main %}
 
     {% block footer %}

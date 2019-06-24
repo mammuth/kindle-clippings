@@ -50,7 +50,8 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-DJANGOCMS_LINK_TEMPLATES = [
-    ('button', 'Button'),
-    ('button_outline', 'Button Outline'),
-]
+CMS_TEMPLATES = (
+    ## Customize this
+    ('fullwidth.html', 'Fullwidth'),
+    ('sidebar.html', 'Sidebar'),
+)
