@@ -14,3 +14,6 @@ https://control.divio.com/api/v1/apps/serve/djangocms-text-ckeditor/3.8.0/b89646
 https://control.divio.com/api/v1/apps/serve/djangocms-video/2.2.0/facb7d0e-0636-4b44-80e7-351b1faf58fc/djangocms-video-2.2.0.tar.gz#egg=djangocms-video==2.2.0
 https://control.divio.com/api/v1/apps/serve/django-filer/1.5.0/0436c013-652d-4086-9d85-082368a36c5e/django-filer-1.5.0.tar.gz#egg=django-filer==1.5.0
 # </INSTALLED_ADDONS>
+django-crispy-forms
+django-extensions
+django-allauth

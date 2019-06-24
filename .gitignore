@@ -24,3 +24,5 @@ npm-debug.log
 package-lock.json
 
 local.sqlite
+
+data.tar.gz

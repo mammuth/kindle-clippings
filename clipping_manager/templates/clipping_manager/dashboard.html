@@ -1,0 +1,35 @@
+{% extends "sidebar.html" %}
+{% load cms_tags i18n %}
+
+{% block sidebar %}
+    {% static_placeholder "dashboard_sidebar" %}
+{% endblock %}
+
+{% block sidebar_main %}
+    {% static_placeholder "dashboard_above_list" %}
+
+    <h1>{% trans "Your Clippings" %}</h1>
+    <span>{% trans "You have" %} {{ clippings_count }} {% trans "clippings" %} {% trans "from" %} {{ books_count }} {% trans "books" %}!</span>
+
+    <div class="clippings-list mt-5">
+        {% for clipping in clippings %}
+            {% include "clipping_manager/partials/clipping_list_item.html" with clipping=clipping %}
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
+                {% endif %}
+                <li class="page-item disabled">
+                    <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
+                {% endif %}
+            </ul>
+    {% endif %}
+{% endblock %}

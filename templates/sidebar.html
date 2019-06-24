@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block content %}
+    <div class="row py-3">
+        <div class="col-3 order-2 ">
+            {% block sidebar %}
+                {% placeholder "sidebar" %}
+            {% endblock %}
+        </div>
+        <div class="col">
+            {% block sidebar_main %}
+                {% placeholder "content" %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock content %}

@@ -23,8 +23,30 @@ import aldryn_addons.settings
 aldryn_addons.settings.load(locals())
 
 
-# all django settings can be altered here
-
 INSTALLED_APPS.extend([
-    # add your project specific apps here
+    'crispy_forms',
+    'django_extensions',
+    'allauth',
+    'allauth.socialaccount',
+    'allauth.account',
+
+    'clipping_manager',
 ])
+
+# Allauth settings
+AUTHENTICATION_BACKENDS.append(['allauth.account.auth_backends.AuthenticationBackend'])
+LOGIN_URL = '/accounts/login/'  # Override divio login
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+DJANGOCMS_LINK_TEMPLATES = [
+    ('button', 'Button'),
+    ('button_outline', 'Button Outline'),
+]

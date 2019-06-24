@@ -17,6 +17,7 @@
   <body>
     {% cms_toolbar %}
 
+    {% block navigation %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Brand</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,12 +32,27 @@
             </ul>
         </div>
     </nav>
+    {% endblock %}
 
+    {% block main %}
     <div class="container py-3">
-        {% block content %}
-            <p>Hello world! This is the Bootstrap 4 Boilerplate.</p>
+        {% block messages %}
+            {% if messages %}
+                <div class="messages">
+                {% for message in messages %}
+                    <div class="alert {% if 'error' in message.tags %} alert-danger {% elif 'success' in message.tags %} alert-success {% elif 'warning' in message.tags %} alert-warning {% endif %}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
         {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
     </div>
+    {% endblock main %}
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
