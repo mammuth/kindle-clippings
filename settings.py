@@ -9,6 +9,7 @@ INSTALLED_ADDONS = [
     'djangocms-link',
     'djangocms-picture',
     'djangocms-snippet',
+    'djangocms-style',
     'djangocms-text-ckeditor',
     'djangocms-video',
     'django-filer',
