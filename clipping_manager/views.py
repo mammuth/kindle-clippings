@@ -72,7 +72,7 @@ class RandomClippingView(TemplateView):
         if not clipping:
             messages.add_message(self.request, messages.WARNING, _('You need to import your highlights first!'))
             return redirect('clipping_manager:upload')
-        return super(RandomClippingView, self).get(*args, **kwargs)
+        return super(RandomClippingView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         ctx = super(RandomClippingView, self).get_context_data(**kwargs)

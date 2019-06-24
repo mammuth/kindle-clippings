@@ -13,7 +13,7 @@ class ClippingQuerySetManager(models.QuerySet):
         count = self.aggregate(count=Count('id'))['count']
         try:
             random_index = randint(0, count - 1)
-            clip = self.all()[random_index]
+            return self.all()[random_index]
         except ValueError:
             return self.none()
 
