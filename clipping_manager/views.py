@@ -1,6 +1,8 @@
 import logging
 
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.db.models import Q, Count
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, ListView
@@ -83,3 +85,21 @@ class RandomClippingView(TemplateView):
 class RandomClippingFullscreenView(RandomClippingView):
     template_name = 'clipping_manager/random_clipping_fullscreen.html'
 
+
+class AdminStatisticsView(TemplateView):
+    template_name = 'clipping_manager/admin_statistics.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AdminStatisticsView, self).get_context_data(**kwargs)
+        ctx['user_count'] = User.objects.count()
+        ctx['books_count'] = Book.objects.count()
+        ctx['clippings_count'] = Clipping.objects.count()
+
+        user_clippings_counts = User.objects.values('email').annotate(Count('clippings'))
+        user_clippings_counts = sorted(
+            list(user_clippings_counts),
+            key=lambda tuple: tuple['clippings__count'],
+            reverse=True
+        )
+        ctx['user_clippings_tuple'] = user_clippings_counts[:30]
+        return ctx
