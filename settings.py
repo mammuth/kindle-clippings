@@ -34,7 +34,7 @@ INSTALLED_APPS.extend([
 ])
 
 # Allauth settings
-AUTHENTICATION_BACKENDS.append(['allauth.account.auth_backends.AuthenticationBackend'])
+AUTHENTICATION_BACKENDS.append('allauth.account.auth_backends.AuthenticationBackend')
 LOGIN_URL = '/accounts/login/'  # Override divio login
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
