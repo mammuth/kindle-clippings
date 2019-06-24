@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib import messages
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, ListView
 from django.utils.translation import ugettext_lazy as _
@@ -67,7 +68,11 @@ class RandomClippingView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(RandomClippingView, self).get_context_data(**kwargs)
-        ctx['clipping'] = Clipping.objects.select_related('book').for_user(self.request.user).random()
+        clipping = Clipping.objects.select_related('book').for_user(self.request.user).random()
+        if not clipping:
+            messages.add_message(self.request, messages.WARNING, _('You need to import your highlights first!'))
+            return redirect('clipping_manager:upload')
+        ctx['clipping'] = clipping
         return ctx
 
 
