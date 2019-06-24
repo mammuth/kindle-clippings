@@ -66,13 +66,17 @@ class UploadMyClippingsFileView(FormView):
 class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
-    def get_context_data(self, **kwargs):
-        ctx = super(RandomClippingView, self).get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
         clipping = Clipping.objects.select_related('book').for_user(self.request.user).random()
+        self.clipping = clipping
         if not clipping:
             messages.add_message(self.request, messages.WARNING, _('You need to import your highlights first!'))
             return redirect('clipping_manager:upload')
-        ctx['clipping'] = clipping
+        return super(RandomClippingView, self).get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(RandomClippingView, self).get_context_data(**kwargs)
+        ctx['clipping'] = self.clipping
         return ctx
 
 
