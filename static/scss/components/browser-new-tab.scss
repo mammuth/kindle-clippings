@@ -1,6 +1,7 @@
 .new-tab-container {
     background-image: url('/static/img/background_1.jpg');
     background-size: cover;
+    min-height: 100vh;
 
     .clipping-container {
         background-color: white;

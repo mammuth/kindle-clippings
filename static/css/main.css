@@ -1,6 +1,7 @@
 .new-tab-container {
   background-image: url("/static/img/background_1.jpg");
-  background-size: cover; }
+  background-size: cover;
+  min-height: 100vh; }
   .new-tab-container .clipping-container {
     background-color: white; }
   .new-tab-container .clipping-content {
