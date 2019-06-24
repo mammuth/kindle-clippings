@@ -1,7 +1,7 @@
 # Reading Notes for Kindle
 :books: Reading Notes is a free and open source web application for maintaining your **Kindle Highlights**.
 
-https://reading-notes.com
+http://reading-notes.com
 
 **Browser New Tab Page or page for wallmounted displays**
 
