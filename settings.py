@@ -36,6 +36,7 @@ INSTALLED_APPS.extend([
 # Allauth settings
 AUTHENTICATION_BACKENDS.append('allauth.account.auth_backends.AuthenticationBackend')
 LOGIN_URL = '/accounts/login/'  # Override divio login
+LOGIN_REDIRECT_URL = 'clipping_manager:dashboard'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'

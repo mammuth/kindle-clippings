@@ -2,11 +2,11 @@
 
 {% block main %}
     {# ToDo: Image size / optimization #}
-    <div class="vh-100 row align-items-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)), url('https://www.deviantart.com/download/541308157/d8ya41p-03f12a25-77bb-4fc1-9c50-0b137b46bf57?token=4b974bcc8c674f55a10bc86635dd6d14fdc96455&ts=1561384909'); opacity: 1; background-size: cover;">
+    <div class="vh-100 row align-items-center new-tab-container">
         <div class="container">
-            <div class="col p-5" style="background: white; color: black;">
-                <p><em>{{ clipping.content }}</em></p>
-                <span>&mdash; {{ clipping.book.title }}</span>
+            <div class="col p-5 clipping-container">
+                <p class="clipping-content">{{ clipping.content }}</p>
+                <span class="clipping-book text-secondary">&mdash; {{ clipping.book.title }}</span>
             </div>
         </div>
     </div>

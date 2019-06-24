@@ -31,7 +31,7 @@ class DashboardView(ListView):
 class UploadMyClippingsFileView(FormView):
     form_class = UploadClippingForm
     template_name = 'clipping_manager/upload_clippings_file.html'
-    success_url = reverse_lazy('clipping_manager:upload')
+    success_url = reverse_lazy('clipping_manager:dashboard')
 
     def form_valid(self, form):
         if 'clippings_file' not in self.request.FILES:
@@ -65,11 +65,12 @@ class UploadMyClippingsFileView(FormView):
 class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super(RandomClippingView, self).get_context_data(**kwargs)
+        ctx['clipping'] = Clipping.objects.select_related('book').for_user(self.request.user).random()
+        return ctx
+
 
 class RandomClippingFullscreenView(RandomClippingView):
     template_name = 'clipping_manager/random_clipping_fullscreen.html'
 
-    def get_context_data(self, **kwargs):
-        ctx = super(RandomClippingFullscreenView, self).get_context_data(**kwargs)
-        ctx['clipping'] = Clipping.objects.select_related('book').for_user(self.request.user).random()
-        return ctx

@@ -1,0 +1,11 @@
+.new-tab-container {
+  background-image: url("/static/img/background_1.jpg");
+  background-size: cover; }
+  .new-tab-container .clipping-container {
+    background-color: white; }
+  .new-tab-container .clipping-content {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 1.3rem;
+    text-align: center; }
+
+/*# sourceMappingURL=main.css.map */

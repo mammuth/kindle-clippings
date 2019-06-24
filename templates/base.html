@@ -10,6 +10,7 @@
 
     <!-- Bootstrap -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
     {% render_block "css" %}
     {{ ALDRYN_SNAKE.render_head }}
@@ -19,7 +20,7 @@
 
     {% block navigation %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Brand</a>
+        <a class="navbar-brand" href="/">Kindle Highlights</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,7 +30,17 @@
                 {% with dropdown=True %}
                     {% show_menu 0 100 100 100 "includes/menu.html" %}
                 {% endwith %}
+
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if not request.user.is_authenticated %}
+                    <li><a class="btn btn-outline-primary" href="{% url "account_signup" %}">{% trans "Sign up" %}</a></li>
+                    <li><a class="btn btn-primary ml-1" href="{% url "account_login" %}">{% trans "Sign in" %}</a></li>
+                {% else %}
+                    <li><a class="btn btn-primary" href="{% url "clipping_manager:dashboard" %}">{% trans "Your Clippings" %}</a></li>
+                {% endif %}
+            </ul>
+
         </div>
     </nav>
     {% endblock %}
