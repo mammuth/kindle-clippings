@@ -56,7 +56,7 @@ class UploadMyClippingsFileView(FormView):
                     )
         except Exception as e:
             logger.error(f'Error processing a clippings file.\n{e}')
-            messages.add_message(self.request, messages.ERROR, _('Could not process the uploaded file'))
+            messages.add_message(self.request, messages.ERROR, _('Could not process the uploaded file. The developer is informed, please try again in a couple of days!'))
         else:
             messages.add_message(self.request, messages.SUCCESS, _('Successfully uploaded My Clippings.txt'))
 
