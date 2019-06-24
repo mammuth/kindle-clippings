@@ -1,0 +1,7 @@
+{% if child.get_descendants %}
+    {% for node in child.get_descendants %}
+        <a class="dropdown-item"  href="{{ node.attr.redirect_url|default:node.get_absolute_url }}">
+            {{ node.get_menu_title }}
+        </a>
+    {% endfor %}
+{% endif %}
