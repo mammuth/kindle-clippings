@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Some methods are taken from https://github.com/lxyu/kindle-clippings
+Modifications have been made.
+"""
 
 import collections
 import re
