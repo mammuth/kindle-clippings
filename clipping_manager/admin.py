@@ -5,12 +5,12 @@ from clipping_manager.models import Clipping, Book, EmailDelivery
 
 @admin.register(Clipping)
 class ClippingAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('user', 'book', )
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('user', 'book', )
 
 
 @admin.register(EmailDelivery)
