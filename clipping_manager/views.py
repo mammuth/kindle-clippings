@@ -129,3 +129,23 @@ def cron_daily_view(request):
 
     response_text = f'Sent {successful_messages} mails.'
     return HttpResponse(content=response_text.encode('utf-8'))
+
+
+def cron_weekly_view(request):
+    """
+    "cron job view" with get's triggered daily.
+    Used as a workaround for periodically tasks without proper infrastructure.
+    """
+    # ToDo: Refactor into real cronjobs or celery tasks once we decide to buy proper infrastructure
+
+    # Get all daily email deliveries which have never been delivered or not been delivered today
+    email_deliveries = EmailDelivery.objects.filter(interval=EmailDelivery.INTERVAL_WEEKLY).select_related('user')
+
+    successful_messages = 0
+    for delivery in email_deliveries:
+        success = delivery.send_random_highlights_per_mail()
+        if success:
+            successful_messages += 1
+
+    response_text = f'Sent {successful_messages} mails.'
+    return HttpResponse(content=response_text.encode('utf-8'))
