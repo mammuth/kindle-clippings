@@ -1,7 +1,9 @@
 {% extends "content.html" %}
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n cms_tags %}
 
 {% block content %}
+    {% static_placeholder "above_upload" %}
+
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
