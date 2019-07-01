@@ -3,14 +3,17 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q, Count
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import TemplateView, FormView, ListView
 from django.utils.translation import ugettext_lazy as _
 
 from clipping_manager.clipping_parser import get_clips_from_text
 from clipping_manager.forms import UploadClippingForm
 from clipping_manager.models import Clipping, Book
+from clipping_manager.models.email_delivery import EmailDelivery
 
 logger = logging.getLogger(__name__)
 
@@ -103,3 +106,26 @@ class AdminStatisticsView(TemplateView):
         )
         ctx['user_clippings_tuple'] = user_clippings_counts[:30]
         return ctx
+
+
+def cron_daily_view(request):
+    """
+    "cron job view" with get's triggered daily.
+    Used as a workaround for periodically tasks without proper infrastructure.
+    """
+    # ToDo: Refactor into real cronjobs or celery tasks once we decide to buy proper infrastructure
+
+    # Get all daily email deliveries which have never been delivered or not been delivered today
+    email_deliveries = EmailDelivery.objects.filter(
+        Q(interval=EmailDelivery.INTERVAL_DAILY)
+        & (Q(last_delivery__isnull=True) | ~Q(last_delivery__day=timezone.now().day))
+    ).select_related('user')
+
+    successful_messages = 0
+    for delivery in email_deliveries:
+        success = delivery.send_random_highlights_per_mail()
+        if success:
+            successful_messages += 1
+
+    response_text = f'Sent {successful_messages} mails.'
+    return HttpResponse(content=response_text.encode('utf-8'))

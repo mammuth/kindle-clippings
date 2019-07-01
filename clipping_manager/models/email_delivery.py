@@ -1,0 +1,77 @@
+import logging
+
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.mail import EmailMessage, send_mail
+from django.db import models
+from django.template.loader import render_to_string
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
+
+from clipping_manager.models import Clipping
+
+logger = logging.getLogger(__name__)
+
+
+class EmailDelivery(models.Model):
+    user = models.OneToOneField(
+        get_user_model(),
+        verbose_name=_('User'),
+        blank=False,
+        null=False,
+    )
+
+    INTERVAL_DAILY = 1
+    INTERVAL_BIWEEKLY = 2
+    INTERVAL_WEEKLY = 3
+
+    INTERVAL_CHOICES = (
+        (INTERVAL_DAILY, _('Daily')),
+        (INTERVAL_BIWEEKLY, _('Bi-weekly')),
+        (INTERVAL_WEEKLY, _('Weekly')),
+    )
+
+    interval = models.PositiveSmallIntegerField(
+        verbose_name=_('Interval'),
+        choices=INTERVAL_CHOICES,
+        blank=False,
+        default=INTERVAL_DAILY,
+    )
+
+    last_delivery = models.DateTimeField(
+        verbose_name=_('Last successful delivery'),
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = 'Email delivery'
+        verbose_name_plural = 'Email deliveries'
+
+    def __str__(self):
+        return f'E-Mail Delivery for {self.user.email} {self.get_interval_display()}'
+
+    def send_random_highlights_per_mail(self):
+        # ToDo: Use shared email connection
+        if self.user.email:
+            try:
+                rendered_highlight_mail = render_to_string('clipping_manager/email/random_clipping_mail.html', {
+                    'clippings': Clipping.objects.for_user(self.user).random(limit=5)
+                })
+                msg = EmailMessage(
+                    'Your Daily Kindle Highlights',
+                    rendered_highlight_mail,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [self.user.email],
+                )
+                msg.content_subtype = 'html'
+                msg.send()
+            except Exception as e:
+                logger.error(f'Error sending highlights per mail. Exception:\n{e}')
+                return False
+            else:
+                # Update last_delivery flag on model instance
+                self.last_delivery = timezone.now()
+                self.save()
+                return True
+        return False

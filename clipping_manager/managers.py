@@ -9,11 +9,17 @@ class ClippingQuerySetManager(models.QuerySet):
     def for_user(self, user):
         return self.filter(user=user)
 
-    def random(self):
+    def random(self, limit=1):
         count = self.aggregate(count=Count('id'))['count']
         try:
-            random_index = randint(0, count - 1)
-            return self.all()[random_index]
+            clippings = []
+            for i in range(0, limit):
+                random_index = randint(0, count - 1)
+                clippings.append(self.all()[random_index])
+                i += 1
+            if limit == 1:
+                return clippings[0]
+            return clippings
         except ValueError:
             return self.none()
 

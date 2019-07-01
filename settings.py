@@ -48,6 +48,8 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
 
+# Email Backend are automatically configured via the EMAIL_URL environment variable
+DEFAULT_FROM_EMAIL = 'kindle-clippings@maxi-muth.de'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

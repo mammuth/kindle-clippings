@@ -1,0 +1,57 @@
+{% load i18n %}
+
+<html lang="en">
+<head>
+    <style>
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 100%;
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px 0;
+
+        }
+        .headline {
+            text-align: center;
+        }
+        .clipping-container {
+            margin-bottom: 75px;
+        }
+        .clipping-content {
+            text-align: center;
+            font-size: 20px;
+            line-height: 30px;
+        }
+        .text-secondary {
+            font-size: 16px;
+            color: #7C7C7C;
+        }
+        .clipping-book {
+        }
+    </style>
+    <title>Your Kindle Highlights</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="headline">Your Kindle Highlights of today</h1>
+        <br>
+        {% for clipping in clippings %}
+            <div class="clipping-container">
+                <p class="clipping-content">{{ clipping.content }}</p>
+                <span class="clipping-book text-secondary">&mdash; {{ clipping.book.title }}</span>
+            </div>
+        {% endfor %}
+        <footer class="text-secondary">
+            {% trans "You can configure your delivery options on" %} <a href="https://kindle-clippings.us.aldryn.io">https://kindle-clippings.us.aldryn.io</a>
+        </footer>
+    </div>
+</body>
+</html>
+
+
