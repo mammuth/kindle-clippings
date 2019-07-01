@@ -44,6 +44,13 @@ class EmailDelivery(models.Model):
         null=True,
     )
 
+    number_of_highlights = models.PositiveSmallIntegerField(
+        verbose_name=_('Number of highlights to be sent per mail'),
+        blank=False,
+        null=False,
+        default=5,
+    )
+
     class Meta:
         verbose_name = 'Email delivery'
         verbose_name_plural = 'Email deliveries'
@@ -56,7 +63,7 @@ class EmailDelivery(models.Model):
         if self.user.email:
             try:
                 rendered_highlight_mail = render_to_string('clipping_manager/email/random_clipping_mail.html', {
-                    'clippings': Clipping.objects.for_user(self.user).random(limit=5)
+                    'clippings': Clipping.objects.for_user(self.user).random(limit=self.number_of_highlights)
                 })
                 msg = EmailMessage(
                     'Your Daily Kindle Highlights',
