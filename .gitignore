@@ -27,3 +27,5 @@ local.sqlite
 
 data.tar.gz
 .aldryn
+
+.env-local
