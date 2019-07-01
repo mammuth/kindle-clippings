@@ -10,7 +10,7 @@ class ClippingAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_filter = ('user', 'book', )
+    list_filter = ('user', )
 
 
 @admin.register(EmailDelivery)
