@@ -16,4 +16,5 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(EmailDelivery)
 class EmailDeliveryAdmin(admin.ModelAdmin):
     search_fields = ('user', )
+    list_filter = ('user', )
     list_display = ('user', 'interval', 'last_delivery', )
