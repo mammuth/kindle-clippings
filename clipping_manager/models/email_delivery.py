@@ -21,6 +21,12 @@ class EmailDelivery(models.Model):
         null=False,
     )
 
+    active = models.BooleanField(
+        verbose_name=_('Active'),
+        blank=False,
+        default=True,
+    )
+
     INTERVAL_DAILY = 1
     INTERVAL_BIWEEKLY = 2
     INTERVAL_WEEKLY = 3
@@ -38,18 +44,19 @@ class EmailDelivery(models.Model):
         default=INTERVAL_DAILY,
     )
 
-    last_delivery = models.DateTimeField(
-        verbose_name=_('Last successful delivery'),
-        blank=True,
-        null=True,
-    )
-
     number_of_highlights = models.PositiveSmallIntegerField(
         verbose_name=_('Number of highlights to be sent per mail'),
         blank=False,
         null=False,
         default=5,
     )
+
+    last_delivery = models.DateTimeField(
+        verbose_name=_('Last successful delivery'),
+        blank=True,
+        null=True,
+    )
+
 
     class Meta:
         verbose_name = 'Email delivery'
@@ -74,7 +81,7 @@ class EmailDelivery(models.Model):
                 msg.content_subtype = 'html'
                 msg.send()
             except Exception as e:
-                logger.error(f'Error sending highlights per mail. Exception:\n{e}')
+                logger.error(f'Error sending highlights per mail. Exception:\n{repr(e)}')
                 return False
             else:
                 # Update last_delivery flag on model instance

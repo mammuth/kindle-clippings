@@ -2,13 +2,17 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import TemplateView, FormView, ListView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView, FormView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic.base import View
 
 from clipping_manager.clipping_parser import get_clips_from_text
 from clipping_manager.forms import UploadClippingForm
@@ -68,6 +72,18 @@ class UploadMyClippingsFileView(FormView):
         return super(UploadMyClippingsFileView, self).form_valid(form)
 
 
+class EmailDeliveryView(SuccessMessageMixin, UpdateView):
+    model = EmailDelivery
+    fields = ['active', 'interval', 'number_of_highlights']
+    template_name = 'clipping_manager/email_delivery_configuration.html'
+    success_url = reverse_lazy('clipping_manager:email-delivery')
+    success_message =  _('Updated your email delivery settings!')
+
+    def get_object(self, queryset=None):
+        delivery, _ = EmailDelivery.objects.get_or_create(user=self.request.user)
+        return delivery
+
+
 class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
@@ -108,44 +124,40 @@ class AdminStatisticsView(TemplateView):
         return ctx
 
 
-def cron_daily_view(request):
-    """
-    "cron job view" with get's triggered daily.
-    Used as a workaround for periodically tasks without proper infrastructure.
-    """
-    # ToDo: Refactor into real cronjobs or celery tasks once we decide to buy proper infrastructure
+@method_decorator(csrf_exempt, name='dispatch')
+class AbstractSendEmailDeliveriesView(View):
+    # ToDo: We should add some kind of authorization here
+    def post(self, request, *args, **kwargs):
+        qs = self.get_queryset()
+        successful_messages = 0
+        for delivery in qs:
+            success = delivery.send_random_highlights_per_mail()
+            if success:
+                successful_messages += 1
 
-    # Get all daily email deliveries which have never been delivered or not been delivered today
-    email_deliveries = EmailDelivery.objects.filter(
-        Q(interval=EmailDelivery.INTERVAL_DAILY)
-        & (Q(last_delivery__isnull=True) | ~Q(last_delivery__day=timezone.now().day))
-    ).select_related('user')
+        response_text = f'Sent {successful_messages} mails.'
+        return HttpResponse(content=response_text.encode('utf-8'))
 
-    successful_messages = 0
-    for delivery in email_deliveries:
-        success = delivery.send_random_highlights_per_mail()
-        if success:
-            successful_messages += 1
-
-    response_text = f'Sent {successful_messages} mails.'
-    return HttpResponse(content=response_text.encode('utf-8'))
+    def get_queryset(self):
+        # Make sure we return only email deliveries which have not been sent yet today
+        # (this way the view cannot be abused that easily)
+        return EmailDelivery.objects.filter(
+            Q(active=True)
+            & (Q(last_delivery__isnull=True) | ~Q(last_delivery__day=timezone.now().day))
+        ).select_related('user')
 
 
-def cron_weekly_view(request):
-    """
-    "cron job view" with get's triggered daily.
-    Used as a workaround for periodically tasks without proper infrastructure.
-    """
-    # ToDo: Refactor into real cronjobs or celery tasks once we decide to buy proper infrastructure
+class DailyEmailDeliveryView(AbstractSendEmailDeliveriesView):
+    def get_queryset(self):
+        qs = super(DailyEmailDeliveryView, self).get_queryset().filter(interval=EmailDelivery.INTERVAL_DAILY)
+        return qs
 
-    # Get all daily email deliveries which have never been delivered or not been delivered today
-    email_deliveries = EmailDelivery.objects.filter(interval=EmailDelivery.INTERVAL_WEEKLY).select_related('user')
 
-    successful_messages = 0
-    for delivery in email_deliveries:
-        success = delivery.send_random_highlights_per_mail()
-        if success:
-            successful_messages += 1
+class BiweeklyEmailDeliveryView(AbstractSendEmailDeliveriesView):
+    def get_queryset(self):
+        return super(BiweeklyEmailDeliveryView, self).get_queryset().filter(interval=EmailDelivery.INTERVAL_BIWEEKLY)
 
-    response_text = f'Sent {successful_messages} mails.'
-    return HttpResponse(content=response_text.encode('utf-8'))
+
+class WeeklyEmailDeliveryView(AbstractSendEmailDeliveriesView):
+    def get_queryset(self):
+        return super(WeeklyEmailDeliveryView, self).get_queryset().filter(interval=EmailDelivery.INTERVAL_WEEKLY)
