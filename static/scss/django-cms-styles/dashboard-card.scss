@@ -1,0 +1,18 @@
+@import "../mixins";
+@import "../variables";
+
+.dashboard-card {
+    margin-bottom: 30px;
+
+    .card {
+        border: none;
+        @include shadow-1;
+    }
+    .card-header {
+        background-color: transparent;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    h2 {
+        color: $color-primary;
+    }
+}

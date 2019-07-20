@@ -1,0 +1,8 @@
+@import "variables";
+
+a {
+    color: $color-primary;
+    &:hover {
+        color: $color-secondary;
+    }
+}

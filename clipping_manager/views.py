@@ -23,14 +23,18 @@ from clipping_manager.models.email_delivery import EmailDelivery
 logger = logging.getLogger(__name__)
 
 
-class DashboardView(ListView):
+class DashboardView(TemplateView):
     template_name = 'clipping_manager/dashboard.html'
+
+
+class ClippingsManagementView(ListView):
+    template_name = 'clipping_manager/management.html'
     context_object_name = 'clippings'
     model = Clipping
     paginate_by = 15
 
     def get_context_data(self, **kwargs):
-        ctx = super(DashboardView, self).get_context_data(**kwargs)
+        ctx = super(ClippingsManagementView, self).get_context_data(**kwargs)
         ctx['clippings_count'] = Clipping.objects.for_user(self.request.user).count()
         ctx['books_count'] = Book.objects.for_user(self.request.user).count()
         return ctx

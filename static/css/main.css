@@ -1,3 +1,8 @@
+a {
+  color: #5553ff; }
+  a:hover {
+    color: #7cda24; }
+
 .new-tab-container {
   background-image: url("/static/img/background_1.jpg");
   background-size: cover;
@@ -8,5 +13,27 @@
     color: rgba(0, 0, 0, 0.85);
     font-size: 1.3rem;
     text-align: center; }
+
+.btn-primary {
+  background-color: #5553ff;
+  border-color: #5553ff; }
+  .btn-primary:hover {
+    background-color: #6e6dff;
+    border-color: #6e6dff; }
+
+.navbar {
+  box-shadow: 0 5px 20px -5px #00000029;
+  background-color: white; }
+
+.dashboard-card {
+  margin-bottom: 30px; }
+  .dashboard-card .card {
+    border: none;
+    box-shadow: 0 5px 10px #0000001a; }
+  .dashboard-card .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
+  .dashboard-card h2 {
+    color: #5553ff; }
 
 /*# sourceMappingURL=main.css.map */
