@@ -33,7 +33,8 @@ a {
   .dashboard-card .card-header {
     background-color: transparent;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
-  .dashboard-card h2 {
-    color: #5553ff; }
+    .dashboard-card .card-header h1, .dashboard-card .card-header h2, .dashboard-card .card-header h3, .dashboard-card .card-header h4, .dashboard-card .card-header h5 {
+      font-size: 1.3rem;
+      color: #6f6f6f; }
 
 /*# sourceMappingURL=main.css.map */

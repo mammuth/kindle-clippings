@@ -11,8 +11,10 @@
     .card-header {
         background-color: transparent;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    h2 {
-        color: $color-primary;
+
+        h1, h2, h3, h4, h5 {
+            font-size: 1.3rem;
+            color: $color-gray-1;
+        }
     }
 }
