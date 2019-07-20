@@ -116,11 +116,12 @@ class AdminStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(AdminStatisticsView, self).get_context_data(**kwargs)
-        ctx['user_count'] = User.objects.count()
+        ctx['user_count_with_uploads'] = User.objects.exclude(clippings__isnull=True).count()
+        ctx['user_count_total'] = User.objects.count()
         ctx['books_count'] = Book.objects.count()
         ctx['clippings_count'] = Clipping.objects.count()
 
-        user_clippings_counts = User.objects.values('email').annotate(Count('clippings'))
+        user_clippings_counts = User.objects.exclude(clippings__isnull=True).values('email').annotate(Count('clippings'))
         user_clippings_counts = sorted(
             list(user_clippings_counts),
             key=lambda tuple: tuple['clippings__count'],
