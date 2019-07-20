@@ -2,12 +2,12 @@
 {% load cms_tags i18n %}
 
 {% block sidebar %}
-    {% static_placeholder "dashboard_sidebar" %}
+    {% static_placeholder "manage_sidebar" %}
     {# ToDo: Filters #}
 {% endblock %}
 
 {% block sidebar_main %}
-    {% static_placeholder "dashboard_above_list" %}
+    {% static_placeholder "manage_above_list" %}
 
     <h1>{% trans "Your Clippings" %}</h1>
     <span>{% trans "You have" %} {{ clippings_count }} {% trans "clippings" %} {% trans "from" %} {{ books_count }} {% trans "books" %}!</span>
