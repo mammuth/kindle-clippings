@@ -3,5 +3,12 @@
 
 
 {% block content %}
+
+    {% if request.user.is_staff %}
+        <div class="my-3 ml-3">
+            <a href="{% url "clipping_manager:statistics" %}">See Statistics</a>
+        </div>
+    {% endif %}
+
     {% static_placeholder "dashboard_above_list" %}
 {% endblock %}
