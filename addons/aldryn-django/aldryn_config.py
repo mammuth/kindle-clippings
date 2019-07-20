@@ -6,7 +6,6 @@ import sys
 from aldryn_client import forms
 
 
-SYSTEM_FIELD_WARNING = 'WARNING: this field is auto-written. Please do not change it here.'
 
 
 class CachedLoader(list):
@@ -44,7 +43,6 @@ class Form(forms.BaseForm):
         'Languages',
         required=True,
         initial='["en", "de"]',
-        help_text=SYSTEM_FIELD_WARNING,
     )
     use_manifeststaticfilesstorage = forms.CheckboxField(
         'Hash static file names',
