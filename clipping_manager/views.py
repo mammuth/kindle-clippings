@@ -1,4 +1,5 @@
 import logging
+from codecs import EncodedFile
 
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -49,7 +50,8 @@ class UploadMyClippingsFileView(FormView):
             return super(UploadMyClippingsFileView, self).form_valid(form)
 
         try:
-            clippings_file_content = self.request.FILES['clippings_file'].read().decode('utf-8')
+            clippings_file = EncodedFile(self.request.FILES['clippings_file'], 'utf-8')
+            clippings_file_content = clippings_file.read()
             clips = get_clips_from_text(clippings_file_content)
             user = self.request.user
             for book, clippings in clips.items():
