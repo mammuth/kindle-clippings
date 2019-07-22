@@ -1,4 +1,5 @@
 import logging
+import traceback
 from codecs import EncodedFile
 
 from django.contrib import messages
@@ -58,22 +59,38 @@ class UploadMyClippingsFileView(FormView):
             clippings_file_content = clippings_file.read()
             clips = get_clips_from_text(clippings_file_content)
             user = self.request.user
+            num_books = 0
+            num_clippings = 0
             for book, clippings in clips.items():
                 book, created = Book.objects.get_or_create(
                     user=user,
                     title=book,
                 )
+                num_books += 1
                 for clip_content in clippings:
                     Clipping.objects.get_or_create(
                         user=user,
                         book=book,
                         content=clip_content,
                     )
+                    num_clippings += 1
         except Exception as e:
-            logger.error(f'Error processing a clippings file.\n{e}')
-            messages.add_message(self.request, messages.ERROR, _('Could not process the uploaded file. The developer is informed, please try again in a couple of days!'))
+            trace = traceback.format_exc()
+            logger.error(f'Error processing a clippings file.\n{e}\n{trace}')
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                _('Couldn\'t process your Clippings. The developer is informed, please try again in a couple of days!')
+            )
         else:
-            messages.add_message(self.request, messages.SUCCESS, _('Successfully uploaded My Clippings.txt'))
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                _('Successfully uploaded {num_clippings} clippings from {num_books} books').format(
+                    num_clippings=num_clippings,
+                    num_books=num_books,
+                )
+            )
 
         return super(UploadMyClippingsFileView, self).form_valid(form)
 

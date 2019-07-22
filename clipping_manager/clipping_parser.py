@@ -36,7 +36,10 @@ def _get_clip(section: str) -> Union[None, Dict[str, Union[str, int]]]:
     return clip
 
 
-def get_clips_from_text(content: str) -> Dict[str, List]:
+def get_clips_from_text(content: Union[str, bytes]) -> Dict[str, List]:
+    if isinstance(content, bytes):
+        content = content.decode('utf-8')
+
     sections = _get_sections(content)
 
     clips = collections.defaultdict(list)

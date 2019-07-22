@@ -36,4 +36,4 @@ class Clipping(models.Model):
         unique_together = ('user', 'book', 'content',)
 
     def __str__(self):
-        return f'{self.content[:50]}...'
+        return f'{self.content[:100]}...'
