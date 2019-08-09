@@ -1,4 +1,4 @@
-pip-reqs compile# <WARNING>
+# <WARNING>
 # Everything within sections like <TAG> is generated and can
 # be automatically replaced on deployment. You can disable
 # this functionality by simply removing the wrapping tags.
