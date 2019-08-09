@@ -20,3 +20,4 @@ https://control.divio.com/api/v1/apps/serve/cmsplugin-slick/0.3.1.2/300885e6-2ee
 django-crispy-forms
 django-extensions
 django-allauth
+django-filter
