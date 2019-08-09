@@ -9,3 +9,12 @@
         border-color: lighten($color-primary, 5%);
     }
 }
+
+.btn-outline-primary {
+    color: $color-primary;
+    border-color: $color-primary;
+    &:hover {
+        background-color: lighten($color-primary, 5%);
+        border-color: lighten($color-primary, 5%);
+    }
+}
