@@ -16,7 +16,8 @@ a {
 
 .btn-primary {
   background-color: #5553ff;
-  border-color: #5553ff; }
+  border-color: #5553ff;
+  font-weight: bold; }
   .btn-primary:hover {
     background-color: #6e6dff;
     border-color: #6e6dff; }

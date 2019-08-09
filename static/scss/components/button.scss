@@ -3,9 +3,9 @@
 .btn-primary {
     background-color: $color-primary;
     border-color: $color-primary;
+    font-weight: bold;
     &:hover {
-
-    background-color: lighten($color-primary, 5%);
-    border-color: lighten($color-primary, 5%);
+        background-color: lighten($color-primary, 5%);
+        border-color: lighten($color-primary, 5%);
     }
 }
