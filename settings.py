@@ -32,6 +32,7 @@ INSTALLED_APPS.extend([
     'allauth',
     'allauth.socialaccount',
     'allauth.account',
+    'django_filters',
 
     'clipping_manager',
 ])

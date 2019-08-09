@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View
 
 from clipping_manager.clipping_parser import get_clips_from_text
+from clipping_manager.filters import ClippingFilter
 from clipping_manager.forms import UploadClippingForm
 from clipping_manager.models import Clipping, Book
 from clipping_manager.models.email_delivery import EmailDelivery
@@ -34,14 +35,21 @@ class ClippingsManagementView(ListView):
     model = Clipping
     paginate_by = 15
 
+    def dispatch(self, request, *args, **kwargs):
+        self.filter = None  # Will be set in get_queryset()
+        return super(ClippingsManagementView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         ctx = super(ClippingsManagementView, self).get_context_data(**kwargs)
         ctx['clippings_count'] = Clipping.objects.for_user(self.request.user).count()
         ctx['books_count'] = Book.objects.for_user(self.request.user).count()
+        ctx['filter'] = self.filter
         return ctx
 
     def get_queryset(self):
-        return Clipping.objects.select_related('book').for_user(user=self.request.user)
+        qs = Clipping.objects.select_related('book').for_user(user=self.request.user)
+        self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
+        return self.filter.qs.distinct()
 
 
 class UploadMyClippingsFileView(FormView):

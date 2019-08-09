@@ -1,36 +1,58 @@
 {% extends "sidebar.html" %}
-{% load cms_tags i18n %}
+{% load cms_tags i18n crispy_forms_tags %}
 
 {% block sidebar %}
     {% static_placeholder "manage_sidebar" %}
-    {# ToDo: Filters #}
+    <h2>{% trans "Filters" %}</h2>
+    <form action="" method="get">
+        {{ filter.form|crispy }}
+        <input type="submit" class="btn btn-primary" value="{% trans 'Search' %}"/>
+            {% if filter.qs.count != clippings_count %}
+                <a href="./">{% trans "Reset filters" %}</a>
+            {% endif %}
+    </form>
 {% endblock %}
 
 {% block sidebar_main %}
     {% static_placeholder "manage_above_list" %}
 
     <h1>{% trans "Your Clippings" %}</h1>
-    <span>{% trans "You have" %} {{ clippings_count }} {% trans "clippings" %} {% trans "from" %} {{ books_count }} {% trans "books" %}!</span>
 
+    {% with filter.qs.count as shown_cippings_count %}
+        {% if shown_cippings_count == clippings_count %}
+            <p>{% trans "You have" %} {{ clippings_count }} {% trans "clippings" %} {% trans "from" %} {{ books_count }} {% trans "books" %}!</p>
+        {% else %}
+            <p>{% blocktrans %}{{ shown_cippings_count }} clippings are matching your search{% endblocktrans %}</p>
+        {% endif %}
+    {% endwith %}
     <div class="clippings-list mt-5">
         {% for clipping in clippings %}
             {% include "clipping_manager/partials/clipping_list_item.html" with clipping=clipping %}
         {% endfor %}
     </div>
 
+
     {% if is_paginated %}
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                {% if 'content' in request.get_full_path %}
+                    <li class="page-item"><a class="page-link" href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
+                {% else %}
                     <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
                 {% endif %}
-                <li class="page-item disabled">
-                    <span class="page-link">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                        </span>
-                </li>
-                {% if page_obj.has_next %}
+            {% endif %}
+            <li class="page-item disabled">
+                <span class="page-link">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+            </li>
+            {% if page_obj.has_next %}
+                {% if 'content' in request.get_full_path %}
+                    <li class="page-item"><a class="page-link" href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
+                {% else %}
                     <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
                 {% endif %}
-            </ul>
+            {% endif %}
+        </ul>
     {% endif %}
 {% endblock %}
