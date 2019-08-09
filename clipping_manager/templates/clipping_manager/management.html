@@ -3,7 +3,7 @@
 
 {% block sidebar %}
     {% static_placeholder "manage_sidebar" %}
-    <h2>{% trans "Filters" %}</h2>
+    <div class="mt-3"><strong>{% trans "Filters" %}</strong></div>
     <form action="" method="get">
         {{ filter.form|crispy }}
         <input type="submit" class="btn btn-primary" value="{% trans 'Search' %}"/>
