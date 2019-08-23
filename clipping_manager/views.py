@@ -145,6 +145,7 @@ class AdminStatisticsView(TemplateView):
         ctx['user_count_total'] = User.objects.count()
         ctx['books_count'] = Book.objects.count()
         ctx['clippings_count'] = Clipping.objects.count()
+        ctx['email_deliveries_count'] = EmailDelivery.objects.filter(active=True).count()
 
         user_clippings_counts = User.objects.exclude(clippings__isnull=True).values('email').annotate(Count('clippings'))
         user_clippings_counts = sorted(
