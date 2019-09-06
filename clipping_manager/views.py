@@ -78,8 +78,10 @@ class UploadMyClippingsFileView(FormView):
                 for clip_content in clippings:
                     Clipping.objects.get_or_create(
                         user=user,
-                        book=book,
                         content=clip_content,
+                        defaults={
+                            'book': book,
+                        }
                     )
                     num_clippings += 1
         except Exception as e:

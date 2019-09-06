@@ -6,6 +6,7 @@ from clipping_manager.models import Clipping, Book, EmailDelivery
 @admin.register(Clipping)
 class ClippingAdmin(admin.ModelAdmin):
     list_filter = ('user', 'book', )
+    search_fields = ('content', )
 
 
 @admin.register(Book)
