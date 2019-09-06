@@ -15,6 +15,21 @@
     border-color: $color-primary;
     &:hover {
         background-color: lighten($color-primary, 5%);
-        border-color: lighten($color-primary, 5%);
+        border-color:  lighten($color-primary, 5%);
+    }
+}
+
+.btn-text {
+    color: $color-primary;
+    font-size: 0.9rem;
+    padding: 0 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    border-width: 0;
+    &:hover {
+        color: $color-secondary;
     }
 }
