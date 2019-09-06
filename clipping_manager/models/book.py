@@ -22,6 +22,12 @@ class Book(models.Model):
         blank=False,
     )
 
+    author_name = models.CharField(
+        verbose_name=_('Author'),
+        max_length=500,
+        blank=True,
+    )
+
     class Meta:
         verbose_name = _('Book')
         verbose_name_plural = _('Books')
@@ -29,4 +35,6 @@ class Book(models.Model):
         unique_together = ('title', 'user',)
 
     def __str__(self):
+        if self.author_name:
+            return f'{self.title} by {self.author_name}'
         return f'{self.title}'

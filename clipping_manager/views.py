@@ -16,9 +16,9 @@ from django.views.generic import TemplateView, FormView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View
 
-from clipping_manager.clipping_parser import get_clips_from_text
+from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
 from clipping_manager.filters import ClippingFilter
-from clipping_manager.forms import UploadClippingForm
+from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings
 from clipping_manager.models import Clipping, Book
 from clipping_manager.models.email_delivery import EmailDelivery
 
@@ -53,8 +53,8 @@ class ClippingsManagementView(ListView):
 
 
 class UploadMyClippingsFileView(FormView):
-    form_class = UploadClippingForm
-    template_name = 'clipping_manager/upload_clippings_file.html'
+    form_class = UploadKindleClippingsForm
+    template_name = 'clipping_manager/upload_kindle_clippings_file.html'
     success_url = reverse_lazy('clipping_manager:dashboard')
 
     def form_valid(self, form):
@@ -65,7 +65,7 @@ class UploadMyClippingsFileView(FormView):
         try:
             clippings_file = EncodedFile(self.request.FILES['clippings_file'], 'utf-8')
             clippings_file_content = clippings_file.read()
-            clips = get_clips_from_text(clippings_file_content)
+            clips = kindle_clipping_parser.get_clips_from_text(clippings_file_content)
             user = self.request.user
             num_books = 0
             num_clippings = 0
@@ -83,8 +83,7 @@ class UploadMyClippingsFileView(FormView):
                     )
                     num_clippings += 1
         except Exception as e:
-            trace = traceback.format_exc()
-            logger.error(f'Error processing a clippings file.\n{e}\n{trace}')
+            logger.error(f'Error processing a clippings file.', exc_info=True)
             messages.add_message(
                 self.request,
                 messages.ERROR,
@@ -101,6 +100,65 @@ class UploadMyClippingsFileView(FormView):
             )
 
         return super(UploadMyClippingsFileView, self).form_valid(form)
+
+
+class UploadTextFileClippingsView(FormView):
+    """
+    View for uploading generic text-file clippings (blank line separated clippings)
+    """
+    form_class = UploadTextClippings
+    template_name = 'clipping_manager/upload_plaintext_clippings_file.html'
+    success_url = reverse_lazy('clipping_manager:dashboard')
+
+    def form_valid(self, form):
+        if 'clippings_file' not in self.request.FILES:
+            messages.add_message(self.request, messages.ERROR, _('Could not process the uploaded file'))
+            return super(UploadTextFileClippingsView, self).form_valid(form)
+
+        clippings_file = EncodedFile(self.request.FILES['clippings_file'], 'utf-8')
+        clippings_file_content = clippings_file.read()
+        clips = plaintext_parser.get_clips_from_text(clippings_file_content)
+        user = self.request.user
+        num_clippings = 0
+
+        try:
+            book_title = form.cleaned_data.get('book_title', None)
+            book = None
+            if book_title:
+                book, __ = Book.objects.get_or_create(
+                    user=user,
+                    title=book_title,
+                    defaults={
+                        'author_name': form.cleaned_data.get('author', None),
+                    },
+                )
+
+            for clip_content in clips:
+                __, created = Clipping.objects.get_or_create(
+                    user=user,
+                    content=clip_content,
+                    defaults={
+                        'book': book,
+                    }
+                )
+                if created:
+                    num_clippings += 1
+        except Exception as e:
+            logger.error(f'Error processing a clippings file.', exc_info=True)
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                _('Couldn\'t process all clippings. The developer is informed, please try again in a couple of days!')
+            )
+        else:
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                _('Successfully uploaded {num_clippings} clippings.').format(
+                    num_clippings=num_clippings,
+                )
+            )
+        return super(UploadTextFileClippingsView, self).form_valid(form)
 
 
 class EmailDeliveryView(SuccessMessageMixin, UpdateView):

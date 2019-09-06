@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags i18n cms_tags %}
+
+{% block content %}
+    {% static_placeholder "above_plaintext_upload" %}
+
+    <form action="{% url "clipping_manager:upload-plaintext" %}" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="{% trans "Upload" %}" class="btn btn-primary mt-4">
+    </form>
+{% endblock %}
