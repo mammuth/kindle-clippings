@@ -8,7 +8,7 @@ https://control.divio.com/api/v1/apps/serve/aldryn-addons/1.1.0/7a2d5a44-16e2-4e
 aldryn-boilerplates==0.8.0
 aldryn-client==2.3.5
 https://control.divio.com/api/v1/apps/serve/aldryn-django-cms/3.6.0.8/eef0b35d-0fb4-44d7-bef1-248950a46af5/aldryn-django-cms-3.6.0.8.tar.gz#egg=aldryn-django-cms==3.6.0.8
-https://control.divio.com/api/v1/apps/serve/aldryn-django/1.11.21.1/4c037e00-8df6-4e50-8698-c77c7d38b28d/aldryn-django-1.11.21.1.tar.gz#egg=aldryn-django==1.11.21.1
+https://control.divio.com/api/v1/apps/serve/aldryn-django/1.11.23.1/7af41e41-9e49-4839-af8a-1bcb8aac9438/aldryn-django-1.11.23.1.tar.gz#egg=aldryn-django==1.11.23.1
 aldryn-sites==0.6.0
 aldryn-snake==1.0.0
 https://control.divio.com/api/v1/apps/serve/aldryn-sso/1.6.0/6d90e844-d7ef-4faa-b527-5df3d49277be/aldryn-sso-1.6.0.tar.gz#egg=aldryn-sso==1.6.0
@@ -23,8 +23,7 @@ defusedxml==0.6.0         # via python3-openid
 dj-database-url==0.5.0
 dj-email-url==0.2.0
 dj-redis-url==0.1.4
-dj-static==0.0.6
-django-allauth==0.39.1
+django-allauth==0.40.0
 django-appconf==1.0.3     # via aldryn-boilerplates, aldryn-sites, cmsplugin-filer, django-compressor, django-select2
 django-cache-url==3.0.0
 django-classy-tags==0.9.0  # via django-cms, django-sekizai
@@ -45,11 +44,11 @@ django-robots==3.1.0
 django-sekizai==1.0.0     # via cmsplugin-filer, django-cms
 django-select2==6.3.1
 django-simple-captcha==0.5.12
-django-simple-sso==0.14.0
-django-sortedm2m==1.5.0
+django-simple-sso==0.14.1
+django-sortedm2m==2.0.0
 django-storages==1.7.1
 django-treebeard==4.3     # via django-cms
-django==1.11.21           # via aldryn-boilerplates, aldryn-sites, cmsplugin-filer, django-allauth, django-appconf, django-classy-tags, django-cms, django-filter, django-formtools, django-mptt, django-polymorphic, django-ranged-response, django-sekizai, django-simple-captcha, django-simple-sso, django-storages, django-treebeard, easy-thumbnails, webservices
+django==1.11.23           # via aldryn-boilerplates, aldryn-sites, cmsplugin-filer, django-allauth, django-appconf, django-classy-tags, django-cms, django-filter, django-formtools, django-mptt, django-polymorphic, django-ranged-response, django-sekizai, django-simple-captcha, django-simple-sso, django-storages, django-treebeard, easy-thumbnails, webservices
 djangocms-admin-style==1.4.0  # via django-cms
 djangocms-attributes-field==1.1.0  # via cmsplugin-filer
 https://control.divio.com/api/v1/apps/serve/djangocms-bootstrap4/1.4.0/cb0dab10-8bab-41aa-af79-100be338a3fb/djangocms-bootstrap4-1.4.0.tar.gz#egg=djangocms-bootstrap4==1.4.0
@@ -69,7 +68,7 @@ furl==2.0.0
 html5lib==1.0.1
 idna==2.8                 # via requests
 itsdangerous==1.1.0       # via django-simple-sso, webservices
-lxml==4.4.0
+lxml==4.4.1
 oauthlib==3.1.0           # via requests-oauthlib
 orderedmultidict==1.0.1   # via furl
 pillow==6.1.0             # via django-simple-captcha, easy-thumbnails
@@ -80,9 +79,8 @@ rcssmin==1.0.6            # via django-compressor
 requests-oauthlib==1.2.0  # via django-allauth
 requests==2.22.0          # via aldryn-client, django-allauth, requests-oauthlib, webservices
 rjsmin==1.1.0             # via django-compressor
-sentry-sdk==0.10.2
-six==1.12.0               # via aldryn-client, django-appconf, django-extensions, django-simple-captcha, furl, html5lib, orderedmultidict
-static3==0.7.0            # via dj-static
+sentry-sdk==0.11.2
+six==1.12.0               # via aldryn-client, django-appconf, django-extensions, django-simple-captcha, django-sortedm2m, furl, html5lib, orderedmultidict
 tabulate==0.8.3           # via aldryn-client
 unidecode==1.0.23
 urllib3==1.25.3           # via requests, sentry-sdk
