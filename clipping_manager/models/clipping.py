@@ -54,7 +54,7 @@ class Clipping(models.Model):
         verbose_name = _('Clipping')
         verbose_name_plural = _('Clippings')
         ordering = ('user', 'book', 'author_name',)
-        unique_together = ('user', 'content',)
+        unique_together = ('user', 'book', 'content',)
 
     def __str__(self):
         return f'{self.content[:100]}...'

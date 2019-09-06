@@ -39,8 +39,4 @@ class Migration(migrations.Migration):
             name='book',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='clipping_manager.Book', verbose_name='Book'),
         ),
-        migrations.AlterUniqueTogether(
-            name='clipping',
-            unique_together=set([('user', 'content')]),
-        ),
     ]
