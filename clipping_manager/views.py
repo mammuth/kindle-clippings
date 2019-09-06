@@ -29,7 +29,7 @@ class DashboardView(TemplateView):
     template_name = 'clipping_manager/dashboard.html'
 
 
-class ClippingsManagementView(ListView):
+class ClippingsBrowseView(ListView):
     template_name = 'clipping_manager/management.html'
     context_object_name = 'clippings'
     model = Clipping
@@ -37,10 +37,10 @@ class ClippingsManagementView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         self.filter = None  # Will be set in get_queryset()
-        return super(ClippingsManagementView, self).dispatch(request, *args, **kwargs)
+        return super(ClippingsBrowseView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        ctx = super(ClippingsManagementView, self).get_context_data(**kwargs)
+        ctx = super(ClippingsBrowseView, self).get_context_data(**kwargs)
         ctx['clippings_count'] = Clipping.objects.for_user(self.request.user).count()
         ctx['books_count'] = Book.objects.for_user(self.request.user).count()
         ctx['filter'] = self.filter
