@@ -110,7 +110,7 @@ class UploadTextFileClippingsView(FormView):
     """
     form_class = UploadTextClippings
     template_name = 'clipping_manager/upload_plaintext_clippings_file.html'
-    success_url = reverse_lazy('clipping_manager:dashboard')
+    success_url = reverse_lazy('clipping_manager:upload-plaintext')
 
     def form_valid(self, form):
         if 'clippings_file' not in self.request.FILES:
