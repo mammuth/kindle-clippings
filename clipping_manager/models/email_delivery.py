@@ -48,7 +48,7 @@ class EmailDelivery(models.Model):
         verbose_name=_('Number of highlights to be sent per mail'),
         blank=False,
         null=False,
-        default=5,
+        default=1,
     )
 
     last_delivery = models.DateTimeField(
