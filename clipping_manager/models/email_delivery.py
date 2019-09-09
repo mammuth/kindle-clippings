@@ -67,13 +67,19 @@ class EmailDelivery(models.Model):
 
     def send_random_highlights_per_mail(self):
         # ToDo: Use shared email connection
+        # ToDo: Use external service?
         if self.user.email:
             try:
+                random_clipping = Clipping.objects.for_user(self.user).random(limit=self.number_of_highlights)
+
+                if not random_clipping:
+                    return False
+
                 rendered_highlight_mail = render_to_string('clipping_manager/email/random_clipping_mail.html', {
-                    'clippings': Clipping.objects.for_user(self.user).random(limit=self.number_of_highlights)
+                    'clippings': random_clipping
                 })
                 msg = EmailMessage(
-                    'Your Daily Kindle Highlights',
+                    _('Your Daily Kindle Highlights'),
                     rendered_highlight_mail,
                     settings.DEFAULT_FROM_EMAIL,
                     [self.user.email],
