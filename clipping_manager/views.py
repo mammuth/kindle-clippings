@@ -30,7 +30,7 @@ class DashboardView(TemplateView):
 
 
 class ClippingsBrowseView(ListView):
-    template_name = 'clipping_manager/management.html'
+    template_name = 'clipping_manager/browse.html'
     context_object_name = 'clippings'
     model = Clipping
     paginate_by = 15
