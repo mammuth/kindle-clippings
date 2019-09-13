@@ -245,7 +245,7 @@ class PersonalStatisticsView(TemplateView):
 
         book_least_clips = books_ordered.first()
         if book_least_clips:
-            book_least_clips_value = f'{book_most_clips.title} ({book_most_clips.clippings.count()} clippings)'
+            book_least_clips_value = f'{book_least_clips.title} ({book_least_clips.clippings.count()} clippings)'
         else:
             book_least_clips_value = ''
 

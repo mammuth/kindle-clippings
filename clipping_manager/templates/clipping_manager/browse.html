@@ -29,6 +29,9 @@
                     <p>{% blocktrans %}{{ shown_cippings_count }} clippings are matching your search{% endblocktrans %}</p>
                 {% endif %}
             {% endwith %}
+            <div>
+                Check out detailed statistics over <a href="{% url 'clipping_manager:statistics' %}" class="btn btn-text">here</a>
+            </div>
         </div>
     </div>
 {% endblock %}
