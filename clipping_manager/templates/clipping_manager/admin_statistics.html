@@ -3,39 +3,49 @@
 {% block content %}
     <div class="row">
         <div class="col-12 col-md-6 mb-6">
-            <div class="d-flex text-center">
+            <div class="card">
+                <div class="card-header">Statistics</div>
+                <div class="card-body">
+                    <div class="d-flex text-center">
+                        <div class="flex-fill">
+                            <h4>{{ user_count_total }}</h4>
+                            <span>Total Users</span>
+                        </div>
 
-                 <div class="flex-fill">
-                    <h4>{{ user_count_total }}</h4>
-                    <span>Total Users</span>
-                </div>
+                        <div class="flex-fill">
+                            <h4>{{ user_count_with_uploads }}</h4>
+                            <span>Active Users</span>
+                        </div>
 
-                <div class="flex-fill">
-                    <h4>{{ user_count_with_uploads }}</h4>
-                    <span>Active Users</span>
-                </div>
+                        <div class="flex-fill">
+                            <h4>{{ clippings_count }}</h4>
+                            <span>Clippings</span>
+                        </div>
 
-                <div class="flex-fill">
-                    <h4>{{ clippings_count }}</h4>
-                    <span>Clippings</span>
-                </div>
+                        <div class="flex-fill">
+                            <h4>{{ books_count }}</h4>
+                            <span>Books</span>
+                        </div>
 
-                <div class="flex-fill">
-                    <h4>{{ books_count }}</h4>
-                    <span>Books</span>
-                </div>
-
-                <div class="flex-fill">
-                    <h4>{{ email_deliveries_count }}</h4>
-                    <span>E-Mail Deliveries</span>
+                        <div class="flex-fill">
+                            <h4>{{ email_deliveries_count }}</h4>
+                            <span>E-Mail Deliveries</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col">
-            <h4>Top Users</h4>
-            {% for tuple in user_clippings_tuple %}
-                {{ tuple.email }}: {{ tuple.clippings__count }}<br/>
-            {% endfor %}
+            <div class="card">
+                <div class="card-header">
+                    Top Users
+                </div>
+                <div class="card-body">
+                    {% for tuple in user_clippings_tuple %}
+                        {{ tuple.email }}: {{ tuple.clippings__count }}<br/>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
