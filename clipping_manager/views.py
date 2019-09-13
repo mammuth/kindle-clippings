@@ -66,36 +66,51 @@ class UploadMyClippingsFileView(FormView):
             clippings_file = EncodedFile(self.request.FILES['clippings_file'], 'utf-8')
             clippings_file_content = clippings_file.read()
             clips = kindle_clipping_parser.get_clips_from_text(clippings_file_content)
+        except Exception as e:
+            logger.error(f'Error parsing a clippings file.', exc_info=True)
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                _('Couldn\'t process your Clippings. No clippings have been imported. The developer is informed, please try again in a couple of days!')
+            )
+        else:
             user = self.request.user
             num_books = 0
             num_clippings = 0
+            errors = 0
             for book, clippings in clips.items():
                 book, created = Book.objects.get_or_create(
                     user=user,
                     title=book,
                 )
-                num_books += 1
-                for clip_content in clippings:
-                    Clipping.objects.get_or_create(
-                        user=user,
-                        content=clip_content,
-                        defaults={
-                            'book': book,
-                        }
-                    )
-                    num_clippings += 1
-        except Exception as e:
-            logger.error(f'Error processing a clippings file.', exc_info=True)
-            messages.add_message(
-                self.request,
-                messages.ERROR,
-                _('Couldn\'t process your Clippings. The developer is informed, please try again in a couple of days!')
-            )
-        else:
+                if created:
+                    num_books += 1
+                try:
+                    for clip_content in clippings:
+                        __, created = Clipping.objects.get_or_create(
+                            user=user,
+                            content=clip_content,
+                            defaults={
+                                'book': book,
+                            }
+                        )
+                        if created:
+                            num_clippings += 1
+                except Exception as e:
+                    errors += 1
+                    logger.error(f'Error importing a clipping.', exc_info=True)
+
+            if errors > 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    _('{num_clippings} clippings could not be imported'.format(num_clippings=errors))
+                )
+
             messages.add_message(
                 self.request,
                 messages.SUCCESS,
-                _('Successfully uploaded {num_clippings} clippings from {num_books} books').format(
+                _('Successfully imported {num_clippings} new clippings from {num_books} books').format(
                     num_clippings=num_clippings,
                     num_books=num_books,
                 )
