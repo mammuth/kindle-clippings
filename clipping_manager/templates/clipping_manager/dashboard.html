@@ -5,7 +5,7 @@
 {% block content %}
     {% if request.user.is_staff %}
         <div class="my-3 ml-3" xmlns="http://www.w3.org/1999/html">
-            <a href="{% url "clipping_manager:statistics" %}">See Statistics</a>
+            <a href="{% url "clipping_manager:admin-statistics" %}">Admin Statistics</a>
         </div>
     {% endif %}
 

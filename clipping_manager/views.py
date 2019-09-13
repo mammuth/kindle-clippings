@@ -1,10 +1,12 @@
 import logging
+import statistics
 import traceback
 from codecs import EncodedFile
 
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db import models
 from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -222,13 +224,72 @@ class AdminStatisticsView(TemplateView):
         ctx['clippings_count'] = Clipping.objects.count()
         ctx['email_deliveries_count'] = EmailDelivery.objects.filter(active=True).count()
 
-        user_clippings_counts = User.objects.exclude(clippings__isnull=True).values('email').annotate(Count('clippings'))
-        user_clippings_counts = sorted(
-            list(user_clippings_counts),
-            key=lambda tuple: tuple['clippings__count'],
-            reverse=True
-        )
+        user_clippings_counts = User.objects.exclude(clippings__isnull=True).values('email').annotate(Count('clippings')).order_by('-clippings__count')
         ctx['user_clippings_tuple'] = user_clippings_counts[:30]
+        return ctx
+
+
+class PersonalStatisticsView(TemplateView):
+    template_name = 'clipping_manager/personal_statistics.html'
+
+    def get_statistics(self):
+        clips = Clipping.objects.for_user(self.request.user)
+        books = Book.objects.annotate(models.Count('clippings')).for_user(self.request.user)
+
+        books_ordered = books.order_by('clippings__count')
+        book_most_clips = books_ordered.last()
+        if book_most_clips:
+            book_most_clips_value = f'{book_most_clips.title} ({book_most_clips.clippings.count()} clippings)'
+        else:
+            book_most_clips_value = ''
+
+        book_least_clips = books_ordered.first()
+        if book_least_clips:
+            book_least_clips_value = f'{book_most_clips.title} ({book_most_clips.clippings.count()} clippings)'
+        else:
+            book_least_clips_value = ''
+
+        book_clippings_counts = books.order_by('-clippings__count').values_list('clippings__count', flat=True)
+        if book_clippings_counts:
+            mean_clippings_per_book = int(statistics.mean(list(book_clippings_counts)))
+        else:
+            mean_clippings_per_book = ''
+
+        clip_contents = clips.values_list('content', flat=True)
+        clip_number_of_words = [len(clip.split()) for clip in clip_contents]
+        clip_number_of_words.sort()
+        longest_clip = clip_number_of_words[-1] if len(clip_number_of_words) > 0 else ''
+        shortest_clip = clip_number_of_words[0] if len(clip_number_of_words) > 0 else ''
+
+        users_with_more_clips = User.objects.exclude(clippings__isnull=True).annotate(models.Count('clippings'))\
+            .filter(clippings__count__gt=clips.count()).count()
+        clips_rank = users_with_more_clips + 1
+
+        users_with_more_books = User.objects.exclude(books__isnull=True).annotate(models.Count('books'))\
+            .filter(books__count__gt=books.count()).count()
+        books_rank = users_with_more_books + 1
+
+        mean_word_count = int(statistics.mean(clip_number_of_words)) if len(clip_number_of_words) > 1 else ''
+
+        return [
+            {'title': _('Number of clippings'), 'value': clips.count()},
+            {'title': _('Number of books'), 'value': books.count()},
+            {'title': _('Book with most clippings'), 'value': book_most_clips_value},
+            {'title': _('Book with least clippings'), 'value': book_least_clips_value},
+            {'title': 'DIVIDER', 'value': ''},  # divider
+            {'title': _('Mean clippings per book'), 'value': mean_clippings_per_book},
+            {'title': _('Words in longest clipping'), 'value': longest_clip},
+            {'title': _('Words in shortest clipping'), 'value': shortest_clip },
+            {'title': _('Mean word count'), 'value': mean_word_count},
+            # {'title': _('Median word count'), 'value': statistics.median(clip_number_of_words)},
+            {'title': 'DIVIDER', 'value': ''},  # divider
+            {'title': _('Clippings number rank'), 'value': _('You are #{rank}'.format(rank=clips_rank)) if clips.count() > 0 else ''},
+            {'title': _('Books number rank'), 'value': _('You are #{rank}'.format(rank=books_rank)) if clips.count() > 0 else ''},
+        ]
+
+    def get_context_data(self, **kwargs):
+        ctx = super(PersonalStatisticsView, self).get_context_data(**kwargs)
+        ctx['statistics'] = self.get_statistics()
         return ctx
 
 

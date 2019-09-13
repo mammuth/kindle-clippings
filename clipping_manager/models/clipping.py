@@ -41,6 +41,7 @@ class Clipping(models.Model):
     book = models.ForeignKey(
         'Book',
         verbose_name='Book',
+        related_name='clippings',
         blank=True,
         null=True,
         on_delete=models.CASCADE,

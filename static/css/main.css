@@ -51,9 +51,28 @@ a {
 .card-header {
   background-color: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
-  .card-header h1, .card-header h2, .card-header h3, .card-header h4, .card-header h5 {
+  .card-header * {
     font-size: 1.3rem;
     color: #6f6f6f; }
+
+.key-value-pair {
+  padding: 8px 0; }
+  .key-value-pair .key {
+    display: inline-block;
+    color: #6f6f6f;
+    font-size: 0.8rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 300px;
+    text-align: right;
+    padding-right: 5px; }
+  .key-value-pair .value {
+    display: inline-block;
+    color: #5553ff;
+    font-weight: bold;
+    max-width: calc(100% - 300px - 5px);
+    vertical-align: top; }
 
 .navbar {
   box-shadow: 0 5px 20px -5px #00000029;

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2>{% trans "Clipping Statistics" %}</h2>
+        </div>
+        <div class="card-body">
+            {% for stat in statistics %}
+                {% if stat.title == "DIVIDER" %}
+                    <div class="my-4"></div>
+                {% else %}
+                    <div class="key-value-pair">
+                        <div class="key">{{ stat.title }}</div>
+                        <div class="value">{{ stat.value }}</div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock content %}
