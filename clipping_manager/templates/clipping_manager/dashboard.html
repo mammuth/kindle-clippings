@@ -13,88 +13,82 @@
 
     <div class="row">
         <div class="col">
-            <div class="dashboard-card">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Manage Clippings</h2>
-                    </div>
-                    <div class="card-body">
-                        <a href="{% url 'clipping_manager:browse' %}" class="btn btn-primary">
-                            Browse Your Clippings
-                        </a>
-                        <p class="mt-4">
-                            You can import clippings from your <em>Amazon Kindle</em> or a simple text file.
-                        </p>
-                        <div class="mt-1">
-                            <a href="{% url 'clipping_manager:upload' %}" class="btn btn-text">
-                                Upload</br>Kindle Clippings
-                            </a>
-                            <a href="{% url 'clipping_manager:upload-plaintext' %}" class="btn btn-text ml-2">
-                                Upload</br>Plaintext Clippings
-                            </a>
-                        </div>
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Manage Clippings</h2>
                 </div>
-            </div>
-
-            <div class="dashboard-card">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>E-Mail Delivery</h2>
-                    </div>
-                    <div class="card-body">
-                        <p>We can send you one of your quotes per e-mail every day or
-                            weekwever you like it!</p>
-                        <a href="{% url 'clipping_manager:email-delivery' %}" class="btn btn-primary">
-                            Configure Your E-Mail Delivery
+                <div class="card-body">
+                    <a href="{% url 'clipping_manager:browse' %}" class="btn btn-primary">
+                        Browse Your Clippings
+                    </a>
+                    <p class="mt-4">
+                        You can import clippings from your <em>Amazon Kindle</em> or a simple text file.
+                    </p>
+                    <div class="mt-1">
+                        <a href="{% url 'clipping_manager:upload' %}" class="btn btn-text">
+                            Upload</br>Kindle Clippings
+                        </a>
+                        <a href="{% url 'clipping_manager:upload-plaintext' %}" class="btn btn-text ml-2">
+                            Upload</br>Plaintext Clippings
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div class="dashboard-card">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Random Quote on Page</h2>
-                    </div>
-                    <div class="card-body">
-                        <strong>Your Random Quote URL</strong>
-                        <a href="https://reading-notes.com/en/clippings/random-fullscreen?refresh=60" target="_blank">
-                            <strong>https://reading-notes.com/en/clippings/random-fullscreen?refresh=60</strong>
-                        </a>
+            <div class="card">
+                <div class="card-header">
+                    <h2>E-Mail Delivery</h2>
+                </div>
+                <div class="card-body">
+                    <p>We can send you one of your quotes per e-mail every day or
+                        weekwever you like it!</p>
+                    <a href="{% url 'clipping_manager:email-delivery' %}" class="btn btn-primary">
+                        Configure Your E-Mail Delivery
+                    </a>
+                </div>
+            </div>
 
-                        <p>&nbsp;</p>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Random Quote on Page</h2>
+                </div>
+                <div class="card-body">
+                    <strong>Your Random Quote URL</strong>
+                    <a href="https://reading-notes.com/en/clippings/random-fullscreen?refresh=60" target="_blank">
+                        <strong>https://reading-notes.com/en/clippings/random-fullscreen?refresh=60</strong>
+                    </a>
 
-                        <p><strong>1. As webpage with random quote (auto
-                            refreshing)</strong></p>
+                    <p>&nbsp;</p>
 
-                        <p>If you have a screen / TV / wallmount / ... where you want
-                            to show random quotes of your kindle highlights you can follow these steps:</p>
+                    <p><strong>1. As webpage with random quote (auto
+                        refreshing)</strong></p>
 
-                        <ol>
-                            <li>Import your clippings&nbsp;<a
-                                    href="{% url 'clipping_manager:upload' %}" class="btn btn-text">here</a></li>
-                            <li>Modify&nbsp;<strong><em>?refresh=X&nbsp;</em></strong>in<strong><em>&nbsp;</em></strong>the
-                                above&nbsp;URL, where&nbsp;<em>X&nbsp;</em>is your wished refresh interval in seconds
-                            </li>
-                            <li>The page will show a new quote every X seconds</li>
-                        </ol>
+                    <p>If you have a screen / TV / wallmount / ... where you want
+                        to show random quotes of your kindle highlights you can follow these steps:</p>
 
-                        <p><strong>2. As New Tab Page</strong></p>
+                    <ol>
+                        <li>Import your clippings&nbsp;<a
+                                href="{% url 'clipping_manager:upload' %}" class="btn btn-text">here</a></li>
+                        <li>Modify&nbsp;<strong><em>?refresh=X&nbsp;</em></strong>in<strong><em>&nbsp;</em></strong>the
+                            above&nbsp;URL, where&nbsp;<em>X&nbsp;</em>is your wished refresh interval in seconds
+                        </li>
+                        <li>The page will show a new quote every X seconds</li>
+                    </ol>
 
-                        <p>If you want to see a random quote/highlight whenever you
-                            open a new tab, follow these steps:</p>
+                    <p><strong>2. As New Tab Page</strong></p>
 
-                        <ol>
-                            <li>Import your clippings&nbsp;<a
-                                    href="{% url 'clipping_manager:upload' %}/" class="btn btn-text">here</a></li>
-                            <li>Install a browser extension like for example&nbsp;<a
-                                    href="https://chrome.google.com/webstore/detail/new-tab-url/njigpponciklokfkoddampoienefegcl/related?hl=en"
-                                    target="_blank">New Tab URL</a></li>
-                            <li>Add the above Random Quote&nbsp;URL to the settings of the extension</li>
-                        </ol>
+                    <p>If you want to see a random quote/highlight whenever you
+                        open a new tab, follow these steps:</p>
 
-                    </div>
+                    <ol>
+                        <li>Import your clippings&nbsp;<a
+                                href="{% url 'clipping_manager:upload' %}/" class="btn btn-text">here</a></li>
+                        <li>Install a browser extension like for example&nbsp;<a
+                                href="https://chrome.google.com/webstore/detail/new-tab-url/njigpponciklokfkoddampoienefegcl/related?hl=en"
+                                target="_blank">New Tab URL</a></li>
+                        <li>Add the above Random Quote&nbsp;URL to the settings of the extension</li>
+                    </ol>
+
                 </div>
             </div>
         </div>

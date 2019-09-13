@@ -1,0 +1,18 @@
+@import "../mixins";
+@import "../variables";
+
+.card {
+    border: none;
+    @include shadow-1;
+    margin-bottom: 50px;
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    h1, h2, h3, h4, h5 {
+        font-size: 1.3rem;
+        color: $color-gray-1;
+    }
+}
