@@ -2,35 +2,51 @@
 {% load cms_tags i18n crispy_forms_tags %}
 
 {% block sidebar %}
-    {% static_placeholder "manage_sidebar" %}
-    <div class="mt-3"><strong>{% trans "Filters" %}</strong></div>
-    <form action="" method="get">
-        {{ filter.form|crispy }}
-        <input type="submit" class="btn btn-primary" value="{% trans 'Search' %}"/>
-            {% if filter.qs.count != clippings_count %}
-                <a href="./">{% trans "Reset filters" %}</a>
-            {% endif %}
-    </form>
+    <div class="card">
+        <div class="card-header">
+            <h2>{% trans "Filters" %}</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="get">
+                {{ filter.form|crispy }}
+                <input type="submit" class="btn btn-primary" value="{% trans 'Search' %}"/>
+                {% if filter.qs.count != clippings_count %}
+                    <a href="./">{% trans "Reset filters" %}</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h1>{% trans "Statistics" %}</h1>
+        </div>
+        <div class="card-body">
+            {% with filter.qs.count as shown_cippings_count %}
+                {% if shown_cippings_count == clippings_count %}
+                    <p>{% trans "You have" %} {{ clippings_count }} {% trans "clippings" %} {% trans "from" %} {{ books_count }} {% trans "books" %}!</p>
+                {% else %}
+                    <p>{% blocktrans %}{{ shown_cippings_count }} clippings are matching your search{% endblocktrans %}</p>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block sidebar_main %}
     {% static_placeholder "manage_above_list" %}
-
-    <h1>{% trans "Your Clippings" %}</h1>
-
-    {% with filter.qs.count as shown_cippings_count %}
-        {% if shown_cippings_count == clippings_count %}
-            <p>{% trans "You have" %} {{ clippings_count }} {% trans "clippings" %} {% trans "from" %} {{ books_count }} {% trans "books" %}!</p>
-        {% else %}
-            <p>{% blocktrans %}{{ shown_cippings_count }} clippings are matching your search{% endblocktrans %}</p>
-        {% endif %}
-    {% endwith %}
-    <div class="clippings-list mt-5">
-        {% for clipping in clippings %}
-            {% include "clipping_manager/partials/clipping_list_item.html" with clipping=clipping %}
-        {% endfor %}
+    <div class="card">
+        <div class="card-header">
+            <h1>{% trans "Your Clippings" %}</h1>
+        </div>
+        <div class="card-body">
+            <div class="clippings-list">
+                {% for clipping in clippings %}
+                    {% include "clipping_manager/partials/clipping_list_item.html" with clipping=clipping %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
-
 
     {% if is_paginated %}
         <ul class="pagination">
@@ -55,4 +71,5 @@
             {% endif %}
         </ul>
     {% endif %}
+
 {% endblock %}
