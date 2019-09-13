@@ -1,0 +1,26 @@
+@import "../mixins";
+@import "../variables";
+
+.pagination {
+    justify-content: center;
+
+    .page-item {
+        @include shadow-1;
+        border-radius: $border-radius-1;
+    }
+
+    .page-link {
+        border: 0;
+        height: 100%;
+        //position: relative;
+        //top: 50%;
+        //transform: translateY(-50%);
+    }
+
+    .page-item:not(.disabled) {
+        .page-link {
+            @include btn-text();
+            padding: 10px;
+        }
+    }
+}

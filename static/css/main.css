@@ -45,7 +45,8 @@ a {
 .card {
   border: none;
   box-shadow: 0 5px 10px #0000001a;
-  margin-bottom: 50px; }
+  margin-bottom: 50px;
+  border-radius: 0.25rem; }
 
 .card-header {
   background-color: transparent;
@@ -57,5 +58,27 @@ a {
 .navbar {
   box-shadow: 0 5px 20px -5px #00000029;
   background-color: white; }
+
+.pagination {
+  justify-content: center; }
+  .pagination .page-item {
+    box-shadow: 0 5px 10px #0000001a;
+    border-radius: 0.25rem; }
+  .pagination .page-link {
+    border: 0;
+    height: 100%; }
+  .pagination .page-item:not(.disabled) .page-link {
+    color: #5553ff;
+    font-size: 0.9rem;
+    padding: 0 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    border-width: 0;
+    padding: 10px; }
+    .pagination .page-item:not(.disabled) .page-link:hover {
+      color: #7cda24; }
 
 /*# sourceMappingURL=main.css.map */

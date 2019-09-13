@@ -1,3 +1,18 @@
 @mixin shadow-1 {
     box-shadow: 0 5px 10px #0000001a;
 }
+
+@mixin btn-text {
+    color: $color-primary;
+    font-size: 0.9rem;
+    padding: 0 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    border-width: 0;
+    &:hover {
+        color: $color-secondary;
+    }
+}
