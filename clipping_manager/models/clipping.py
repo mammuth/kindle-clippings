@@ -30,7 +30,7 @@ class Clipping(models.Model):
     content_hash = models.CharField(
         verbose_name=_('Hash of the clipping'),
         max_length=100,
-        blank=False,
+        blank=True,
         null=True,
     )
 
@@ -70,13 +70,14 @@ class Clipping(models.Model):
         return f'{self.content[:100]}...'
 
     def save(self, *args, **kwargs):
+        self._generate_content_hash()
+        super(Clipping, self).save(*args, **kwargs)
 
+    def _generate_content_hash(self) -> None:
         # Generate hash of the content and store it in content_hash
         # This is used for unique_together which is not possible with content directly due ot its arbitrary length
         content_md5_obj = hashlib.md5(self.content.encode('utf-8'))
         self.content_hash = content_md5_obj.hexdigest()
-
-        super(Clipping, self).save(*args, **kwargs)
 
     def get_author_name(self) -> str:
         if self.author_name:
