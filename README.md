@@ -5,13 +5,11 @@
 
 http://reading-notes.com
 
-**Browser New Tab Page or page for wallmounted displays**
-
-Get a random quote from your favourite books whenever you open a new tab!
-
-![macbook_design_mockup png__2253x1481_q90_subsampling-2](https://user-images.githubusercontent.com/3121306/60038724-5f157700-96b5-11e9-8e2d-a490112119ef.png)
-
-It's also possible to load a new quoet every X seconds.
+**Features:**
+- Upload and search through your clippings
+- Filter clippings by books
+- **E-Mail delivery** of a random quote (daily, bi-weekly, weekly)
+- Page with a random quote (can be used as new-tab page or on wall-mounted screens).
 
 ## Contribute
 Feel free to open issues or PRs!
@@ -24,7 +22,7 @@ This is a pretty simple django application with a good'ol HTML frontend generate
 
 
 ## Roadmap
-- UI for configuring periodical email deliveries
+- Integrate with more services than just Kindle
 - Restful API for retrieving ones notes
-- Export in various formats
-- Customizable the New Tab page
+- Export in various formats 
+- Slack Bot
