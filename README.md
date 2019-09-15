@@ -9,6 +9,7 @@ http://reading-notes.com
 - Upload and search through your clippings
 - Filter clippings by books
 - **E-Mail delivery** of a random quote (daily, bi-weekly, weekly)
+- Nerdy statistics about your clippings
 - Page with a random quote (can be used as new-tab page or on wall-mounted screens).
 
 ## Contribute
