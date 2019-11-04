@@ -65,7 +65,7 @@ class UploadMyClippingsFileView(FormView):
             return super(UploadMyClippingsFileView, self).form_valid(form)
 
         try:
-            clippings_file = EncodedFile(self.request.FILES['clippings_file'], 'utf-8')
+            clippings_file = EncodedFile(self.request.FILES['clippings_file'], data_encoding='utf-8', errors='ignore')
             clippings_file_content = clippings_file.read()
             clips = kindle_clipping_parser.get_clips_from_text(clippings_file_content)
         except Exception as e:
