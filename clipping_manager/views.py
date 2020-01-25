@@ -134,7 +134,11 @@ class UploadTextFileClippingsView(FormView):
             messages.add_message(self.request, messages.ERROR, _('Could not process the uploaded file'))
             return super(UploadTextFileClippingsView, self).form_valid(form)
 
-        clippings_file = EncodedFile(self.request.FILES['clippings_file'], 'utf-8')
+        clippings_file = EncodedFile(
+            self.request.FILES['clippings_file'],
+            'utf-8',
+            errors='ignore',
+        )
         clippings_file_content = clippings_file.read()
         clips = plaintext_parser.get_clips_from_text(clippings_file_content)
         user = self.request.user
