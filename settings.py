@@ -63,3 +63,17 @@ CMS_TEMPLATES = (
     ('fullwidth.html', 'Fullwidth'),
     ('sidebar.html', 'Sidebar'),
 )
+
+if DEBUG == True:
+    ALLOWED_HOSTS = ['*']
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': 'db',
+            'PORT': 5432
+        }
+    }
