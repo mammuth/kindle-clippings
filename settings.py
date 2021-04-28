@@ -64,7 +64,7 @@ CMS_TEMPLATES = (
     ('sidebar.html', 'Sidebar'),
 )
 
-if DEBUG == True:
+if DEBUG:
     ALLOWED_HOSTS = ['*']
 
     DATABASES = {
