@@ -18,7 +18,7 @@ This is a pretty simple django application with a good'ol HTML frontend generate
 
 #### Project setup
 - Run `docker-compose up`
-- Open a new terminal and create a new superuser: `docker-compose run --rm web python createsuperuser`
+- Open a new terminal and create a new superuser: `docker-compose run --rm web python manage.py createsuperuser`
 - Open `localhost:8000` and log in as the superuser
 - In _DJANGO CMS_ -> _Pages_ create a new page
 - Name it however you like and click _Save and continue editing_
