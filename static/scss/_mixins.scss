@@ -16,3 +16,9 @@
         color: $color-secondary;
     }
 }
+
+@mixin key-value-width($width) {
+    .key {min-width: $width}
+
+    .value {max-width: calc(100% - #{$width} - 3%)}
+}
