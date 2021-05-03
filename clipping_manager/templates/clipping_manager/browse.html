@@ -1,5 +1,6 @@
 {% extends "sidebar.html" %}
-{% load cms_tags i18n crispy_forms_tags %}
+{% load cms_tags i18n crispy_forms_tags%}
+{% load static %}
 
 {% block sidebar %}
     <div class="card">
@@ -52,5 +53,8 @@
     </div>
 
     {% include "partials/pagination.html" %}
-
 {% endblock %}
+
+{% block additional_js %}
+    <script src="{% static 'js/helper-functions.js' %}" onload="highlightClippings('{{contains}}')"></script>
+{% endblock additional_js %}

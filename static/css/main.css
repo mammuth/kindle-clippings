@@ -3,6 +3,10 @@ a {
   a:hover {
     color: #7cda24; }
 
+.highlight {
+  background: #ffc600;
+}
+
 .new-tab-container {
   background-image: url("/static/img/background_1.jpg");
   background-size: cover;
