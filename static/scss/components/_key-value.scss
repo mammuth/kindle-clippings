@@ -1,9 +1,11 @@
 @import "../variables";
+@import "../mixins";
+
 
 .key-value-pair {
     padding: 8px 0;
 
-    $key-min-width: 300px;
+    @include key-value-width($width: 300px);
 
     .key {
         display: inline-block;
@@ -14,7 +16,6 @@
         text-transform: uppercase;
         letter-spacing: 1px;
 
-        min-width: $key-min-width;
         text-align: right;
 
         padding-right: 5px;
@@ -26,8 +27,21 @@
         color: $color-primary;
         font-weight: bold;
 
-        max-width: calc(100% - #{300px} - 5px);
         vertical-align: top;
 
+    }
+}
+
+.key-value-pair {
+    @media only screen and (max-width: $desktop) {  
+        @include key-value-width($width: 260px);
+    }
+
+    @media only screen and (max-width: $tablet) {
+        @include key-value-width($width: 230px);
+    }
+
+    @media only screen and (max-width: $phone) {
+        @include key-value-width($width: 220px);
     }
 }
