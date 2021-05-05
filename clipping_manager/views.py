@@ -45,7 +45,7 @@ class ClippingsBrowseView(ListView):
         ctx = super(ClippingsBrowseView, self).get_context_data(**kwargs)
         ctx['clippings_count'] = Clipping.objects.for_user(self.request.user).count()
         ctx['books_count'] = Book.objects.for_user(self.request.user).count()
-        ctx['contains'] = self.request.GET['content']
+        ctx['contains'] = self.request.GET.get('content', '')
         ctx['filter'] = self.filter
         return ctx
 

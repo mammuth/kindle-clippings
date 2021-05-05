@@ -1,5 +1,8 @@
 // Highlights the searched phrase ('Content contains') in clippings 
 function highlightClippings(wordToHighlight) {
+    // If empty -> stop the function
+    if (!wordToHighlight) return;
+
     // Get all clippings' text
     const clippings = document.querySelectorAll('.clipping-content > em');
 
