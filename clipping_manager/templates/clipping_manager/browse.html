@@ -1,5 +1,6 @@
 {% extends "sidebar.html" %}
 {% load cms_tags i18n crispy_forms_tags %}
+{% load staticfiles sekizai_tags %}
 
 {% block sidebar %}
     <div class="card">
@@ -53,4 +54,9 @@
 
     {% include "partials/pagination.html" %}
 
+    {% addtoblock "js" %}
+        <script src="{% static 'js/helper-functions.js' %}" onload="highlightClippings('{{contains}}')"></script>
+    {% endaddtoblock %}
 {% endblock %}
+
+{% render_block "js" %}
