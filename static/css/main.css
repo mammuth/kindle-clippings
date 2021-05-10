@@ -212,9 +212,9 @@ a:hover {
 .gallery-view .gallery-element:hover {
   border-color: #ffc800;
   -webkit-filter: blur(0px);
-  filter: blur(0px);
+          filter: blur(0px);
   -webkit-transform: scale(1.07);
-  transform: scale(1.07);
+          transform: scale(1.07);
 }
 
 .gallery-view .gallery-element .book-cover {
