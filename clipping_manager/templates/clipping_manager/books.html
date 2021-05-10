@@ -11,26 +11,50 @@
                 </svg>
             </span>
         </div>
-        <input type="text" class="form-control" id="search-book" placeholder="Search a book" aria-label="Search a book">
+        <input type="text" class="form-control" id="search-book" placeholder="Search a book or an author" aria-label="Search a book">
     </div>
-    <div id="book-view" class="gallery-view">
+    <div id="book-view" class="list-view">
         {% for book in books %}
-            <a href="{% url 'clipping_manager:browse'%}{% urlparams book=book.id content='' %}">
-                <div class="gallery-element">
-                    <div class="book-cover">
-                        <img src="https://www.rm.com.pl/pol_pl_Komandosi-Hitlera-e-book-1081_1.jpg" alt="#TODO">
+            <div class="book-element">
+                <a href="{% url 'clipping_manager:browse'%}{% urlparams book=book.id content='' %}">
+                    <div class="list-element">
+                        <div class="book-cover">
+                            <img src="https://www.rm.com.pl/pol_pl_Komandosi-Hitlera-e-book-1081_1.jpg" alt="#TODO">
+                        </div>
+                        <div class="book-title">
+                            {{book.title|default:"unknown"}}
+                        </div>
+                        <div class="book-author">
+                            {{book.author|default:"unknown"}}
+                        </div>
+                        <div class="book-clippings-count">
+                        </div>
                     </div>
-                    <div class="book-title">
-                        {{book.title|default:"unknown"}}
-                    </div>
-                    <div class="book-author">
-                        {{book.author|default:"unknown"}}
-                    </div>
-                    <div class="book-clippings-count">
-                    </div>
-                </div>
-            </a>
+                </a>
+            </div>
         {% endfor %}
     </div>
+    <script>
+        function displayMatches() {
+            const regex = new RegExp(this.value, 'gi')
 
+            books.forEach(book => {
+                const title = book.querySelector('.book-title').textContent;
+                const author = book.querySelector('.book-author').textContent;
+
+                if (title.match(regex) || author.match(regex)) {
+                    book.style.display = 'block';
+                }
+                else {
+                    book.style.display = 'none';
+                }
+            })
+        }
+
+        const searchInput = document.querySelector('#search-book');
+        const books = document.querySelectorAll('.book-element')
+
+        searchInput.addEventListener('keyup', displayMatches);
+
+    </script>
 {% endblock %}
