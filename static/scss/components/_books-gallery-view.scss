@@ -1,5 +1,7 @@
 @import "../variables";
 
+
+
 .gallery-view {
     display: grid;
     grid-template-columns: repeat(auto-fill,  190px);
@@ -8,15 +10,32 @@
     column-gap: 10px;
     row-gap: 30px;
 
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
     .gallery-element {
-        border: 0.1px solid $color-gray-1;
-        display: grid;
+        border: 0.1px solid #e4e4e4;
         height: 100%;
+        padding: 0 5px;
+
+        display: grid;
         grid-template-rows: 7fr 1fr 1fr;
 
+        transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+
+        &:hover {
+            border-color: $color-tertiary;
+            filter: blur(0px);
+            transform: scale(1.07);
+        }
+
+
         .book-cover {
-            justify-self: center;
-            align-self: center;
+            display: grid;
+            justify-content: center;
+            align-content: center;
 
             img {
                 max-height: 160px;
@@ -28,22 +47,19 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: bold;
-            padding-left: 3px;
+            
         }
 
         .book-author {
-            // align-self: center;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 0.7rem;
-            padding-left: 3px;
         }
 
         .book-clippings-count {
-
             display: none;
         }
     }

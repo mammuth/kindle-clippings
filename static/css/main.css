@@ -192,21 +192,39 @@ a:hover {
   row-gap: 30px;
 }
 
+.gallery-view a {
+  color: black;
+  text-decoration: none;
+}
+
 .gallery-view .gallery-element {
-  border: 0.1px solid #6f6f6f;
+  border: 0.1px solid #e4e4e4;
+  height: 100%;
+  padding: 0 5px;
   display: -ms-grid;
   display: grid;
-  height: 100%;
   -ms-grid-rows: 7fr 1fr 1fr;
       grid-template-rows: 7fr 1fr 1fr;
+  -webkit-transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+  transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+}
+
+.gallery-view .gallery-element:hover {
+  border-color: #ffc800;
+  -webkit-filter: blur(0px);
+  filter: blur(0px);
+  -webkit-transform: scale(1.07);
+  transform: scale(1.07);
 }
 
 .gallery-view .gallery-element .book-cover {
-  -ms-grid-column-align: center;
-      justify-self: center;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 
 .gallery-view .gallery-element .book-cover img {
@@ -220,9 +238,8 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  padding-left: 3px;
 }
 
 .gallery-view .gallery-element .book-author {
@@ -230,7 +247,6 @@ a:hover {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.7rem;
-  padding-left: 3px;
 }
 
 .gallery-view .gallery-element .book-clippings-count {
