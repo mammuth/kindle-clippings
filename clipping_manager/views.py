@@ -54,6 +54,29 @@ class ClippingsBrowseView(ListView):
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
+#TODO: delete after implementing
+class ClippingsGalleryListView(ListView):
+    template_name = 'clipping_manager/books.html'
+    context_object_name = 'books'
+    model = Book
+    # paginate_by = 15
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     self.filter = None  # Will be set in get_queryset()
+    #     return super(ClippingsGalleryListView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ClippingsGalleryListView, self).get_context_data(**kwargs)
+        ctx['books_count'] = Book.objects.for_user(self.request.user).count()
+        # ctx['filter'] = self.filter
+        return ctx
+
+    # def get_queryset(self):
+    #     # qs = Clipping.objects.select_related('book').for_user(user=self.request.user)
+    #     qs = Book.objects.for_user(self.request.user)
+    #     self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
+    #     return self.filter.qs.distinct()
+
 
 class UploadMyClippingsFileView(FormView):
     form_class = UploadKindleClippingsForm

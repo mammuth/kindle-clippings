@@ -1,0 +1,25 @@
+{% extends "sidebar.html" %}
+{% load cms_tags i18n crispy_forms_tags urlparams %}
+{% load staticfiles sekizai_tags %}
+
+{% block sidebar_main %}
+    <div id="book-view" class="gallery-view">
+        {% for book in books %}
+            <a href="{% url 'clipping_manager:browse'%}{% urlparams book=book.id content='' %}">
+                <div class="gallery-element">
+                    <div class="book-cover">
+                        <img src="https://www.rm.com.pl/pol_pl_Komandosi-Hitlera-e-book-1081_1.jpg" alt="#TODO">
+                    </div>
+                    <div class="book-title">
+                        {{book.title|default:"unknown"}}
+                    </div>
+                    <div class="book-author">
+                        {{book.author|default:"unknown"}}
+                    </div>
+                    <div class="book-clippings-count">
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

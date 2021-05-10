@@ -1,0 +1,50 @@
+@import "../variables";
+
+.gallery-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,  190px);
+    grid-auto-rows: 230px;
+    justify-content: space-between;
+    column-gap: 10px;
+    row-gap: 30px;
+
+    .gallery-element {
+        border: 0.1px solid $color-gray-1;
+        display: grid;
+        height: 100%;
+        grid-template-rows: 7fr 1fr 1fr;
+
+        .book-cover {
+            justify-self: center;
+            align-self: center;
+
+            img {
+                max-height: 160px;
+            }
+        }
+
+        .book-title {
+            align-self: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding-left: 3px;
+        }
+
+        .book-author {
+            // align-self: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.7rem;
+            padding-left: 3px;
+        }
+
+        .book-clippings-count {
+
+            display: none;
+        }
+    }
+}
