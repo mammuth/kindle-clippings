@@ -14,10 +14,16 @@
         <input type="text" class="form-control" id="search-book" placeholder="Search a book or an author" aria-label="Search a book">
     </div>
     <div id="book-view" class="list-view">
+        <div class="list-header">
+            <div></div>
+            <div>Title</div>
+            <div>Author</div>
+            <div>Clippings</div>
+        </div>
         {% for book in books %}
             <div class="book-element">
                 <a href="{% url 'clipping_manager:browse'%}{% urlparams book=book.id content='' %}">
-                    <div class="list-element">
+                    <div class="view-element">
                         <div class="book-cover">
                             <img src="https://www.rm.com.pl/pol_pl_Komandosi-Hitlera-e-book-1081_1.jpg" alt="#TODO">
                         </div>
@@ -25,9 +31,10 @@
                             {{book.title|default:"unknown"}}
                         </div>
                         <div class="book-author">
-                            {{book.author|default:"unknown"}}
+                            {{book.author_name|default:"unknown"}}
                         </div>
                         <div class="book-clippings-count">
+                            44
                         </div>
                     </div>
                 </a>
