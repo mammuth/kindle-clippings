@@ -49,3 +49,24 @@
         }
     }
 }
+
+// Hide author for < tablet screens
+.list-view {
+    @media only screen and (max-width: $tablet) {
+        .list-header {
+            grid-template-columns: 50px 8fr 2fr;
+
+            :nth-child(3) {
+                display: none;
+            }
+        }
+
+        .view-element {
+            grid-template-columns: 50px 8fr 2fr;
+
+            .book-author {
+                display: none;
+            }
+        }
+    }
+}

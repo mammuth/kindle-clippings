@@ -325,4 +325,21 @@ a:hover {
       justify-self: start;
   font-weight: 380;
 }
+
+@media only screen and (max-width: 768px) {
+  .list-view .list-header {
+    -ms-grid-columns: 50px 8fr 2fr;
+        grid-template-columns: 50px 8fr 2fr;
+  }
+  .list-view .list-header :nth-child(3) {
+    display: none;
+  }
+  .list-view .view-element {
+    -ms-grid-columns: 50px 8fr 2fr;
+        grid-template-columns: 50px 8fr 2fr;
+  }
+  .list-view .view-element .book-author {
+    display: none;
+  }
+}
 /*# sourceMappingURL=main.css.map */
