@@ -22,3 +22,27 @@
 
     .value {max-width: calc(100% - #{$width} - 3%)}
 }
+
+@mixin plain-link {
+    color: black;
+    text-decoration: none;
+}
+
+@mixin ellipsis-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin list-grid($border-color, $col-widths) {
+    height: 100%;
+    padding: 5px;
+    
+    border-bottom: 1px solid $border-color;
+
+    display: grid;
+    grid-template-columns: $col-widths;
+
+    align-items: center;
+    justify-items: center;
+}

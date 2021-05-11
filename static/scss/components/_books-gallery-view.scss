@@ -1,4 +1,5 @@
 @import "../variables";
+@import "../mixins";
 
 .gallery-view {
     display: grid;
@@ -9,8 +10,7 @@
     row-gap: 30px;
 
     a {
-        color: black;
-        text-decoration: none;
+        @include plain-link;
     }
 
     .list-header {
@@ -18,14 +18,16 @@
     }
 
     .view-element {
-        border: 0.1px solid #e4e4e4;
         height: 100%;
         padding: 0 5px;
+        border: 0.1px solid $border-light-gray;
 
         display: grid;
         grid-template-rows: 7fr 1fr 1fr;
 
         transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+
+        @include shadow-1;
 
         &:hover {
             border-color: $color-tertiary;
@@ -36,28 +38,24 @@
 
         .book-cover {
             display: grid;
-            justify-content: center;
-            align-content: center;
 
             img {
-                max-height: 160px;
+                justify-self: center;
+                align-self: center;
+                max-height: 150px;
             }
         }
 
         .book-title {
             align-self: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            @include ellipsis-overflow;
             font-size: 0.8rem;
             font-weight: bold;
             
         }
 
         .book-author {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            @include ellipsis-overflow;
             font-size: 0.7rem;
         }
 
