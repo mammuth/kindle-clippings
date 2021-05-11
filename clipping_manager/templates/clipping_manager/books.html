@@ -52,7 +52,7 @@
                             {{book.author_name|default:"unknown"}}
                         </div>
                         <div class="book-clippings-count">
-                            44
+                            #TODO
                         </div>
                     </div>
                 </a>
@@ -60,50 +60,14 @@
         {% endfor %}
     </div>
 
-    <script>
-        function displayMatches() {
-            const regex = new RegExp(this.value, 'gi');
+    {% addtoblock "js" %}
+        <script src="{% static 'js/helper-functions.js' %}"></script>
+        <script>
+            window.onload = function() {
+                searchBook();
+                switchView();
+            };
+        </script>
+    {% endaddtoblock %}
 
-            books.forEach(book => {
-                const title = book.querySelector('.book-title').textContent;
-                const author = book.querySelector('.book-author').textContent;
-
-                if (title.match(regex) || author.match(regex)) {
-                    book.style.display = 'block';
-                }
-                else {
-                    book.style.display = 'none';
-                }
-            })
-        }
-
-        const searchInput = document.querySelector('#search-book');
-        const books = document.querySelectorAll('.book-element');
-
-        searchInput.addEventListener('keyup', displayMatches);
-
-    </script>
-    <script>
-        const galleryBtn = document.querySelector('#btn-gallery');
-        const listBtn = document.querySelector('#btn-list');
-        const bookView = document.querySelector('#book-view')
-
-        // Switches between the list and the gallery book view + controls buttons' colors
-        function viewControl(viewToSet) {
-            buttonToDisable = (this === galleryBtn) ? listBtn : galleryBtn;
-
-            // Swap buttons' colors
-            buttonToDisable.classList.remove('btn-dark');
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-
-            // Switch the book view
-            bookView.className = (this === galleryBtn) ? 'gallery-view' : 'list-view';
-        }
-
-        galleryBtn.addEventListener('click', viewControl);
-        listBtn.addEventListener('click', viewControl);
-
-        
-    </script>
 {% endblock %}
