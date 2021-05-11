@@ -49,11 +49,13 @@ function switchView() {
     const listBtn = document.querySelector('#btn-list');
     const bookView = document.querySelector('#book-view');
 
-    function viewControl(viewToSet) {
+    function viewControl() {
         buttonToDisable = (this === galleryBtn) ? listBtn : galleryBtn;
 
         // Swap buttons' colors
         buttonToDisable.classList.remove('btn-dark');
+        buttonToDisable.classList.add('btn-light');
+
         this.classList.remove('btn-light');
         this.classList.add('btn-dark');
 
