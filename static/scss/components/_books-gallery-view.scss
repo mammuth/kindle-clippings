@@ -1,7 +1,5 @@
 @import "../variables";
 
-
-
 .gallery-view {
     display: grid;
     grid-template-columns: repeat(auto-fill,  190px);
@@ -15,7 +13,11 @@
         text-decoration: none;
     }
 
-    .gallery-element {
+    .list-header {
+        display: none;
+    }
+
+    .view-element {
         border: 0.1px solid #e4e4e4;
         height: 100%;
         padding: 0 5px;
