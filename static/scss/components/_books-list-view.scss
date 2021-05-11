@@ -2,7 +2,7 @@
 @import "../mixins";
 
 .list-view {
-    border: 0.05px solid $border-gray;
+    border: 1px solid $border-gray;
     
     display: grid;
     grid-auto-rows: minmax(60px, auto);

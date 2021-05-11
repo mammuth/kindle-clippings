@@ -209,8 +209,10 @@ a:hover {
   display: grid;
   -ms-grid-rows: 7fr 1fr 1fr;
       grid-template-rows: 7fr 1fr 1fr;
-  -webkit-transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
-  transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+  -webkit-transition: border-color 0.2s cubic-bezier(0, 0.03, 0.23, 0.94), -webkit-transform 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+  transition: border-color 0.2s cubic-bezier(0, 0.03, 0.23, 0.94), -webkit-transform 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+  transition: border-color 0.2s cubic-bezier(0, 0.03, 0.23, 0.94), transform 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+  transition: border-color 0.2s cubic-bezier(0, 0.03, 0.23, 0.94), transform 0.2s cubic-bezier(0, 0.03, 0.23, 0.94), -webkit-transform 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
   -webkit-box-shadow: 0 5px 10px #0000001a;
           box-shadow: 0 5px 10px #0000001a;
 }
@@ -260,7 +262,7 @@ a:hover {
 }
 
 .list-view {
-  border: 0.05px solid #aba6a6;
+  border: 1px solid #aba6a6;
   display: -ms-grid;
   display: grid;
   grid-auto-rows: minmax(60px, auto);

@@ -25,7 +25,8 @@
         display: grid;
         grid-template-rows: 7fr 1fr 1fr;
 
-        transition: all 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
+        transition: border-color 0.2s cubic-bezier(0, 0.03, 0.23, 0.94),
+                    transform 0.2s cubic-bezier(0, 0.03, 0.23, 0.94);
 
         @include shadow-1;
 
