@@ -1,0 +1,73 @@
+@import "../variables";
+@import "../mixins";
+
+.list-view {
+    display: grid;
+    grid-auto-rows: minmax(60px, auto);
+    border: 0.05px solid #aba6a6;
+    @include shadow-1;
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .list-header {
+        height: 100%;
+        list-style-type: none;
+        display: grid;
+        grid-template-columns: 50px 6fr 3fr 1fr;
+        background: #e9e9e9;
+        padding: 5px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-bottom: 0.05px solid #aba6a6;
+
+        :nth-child(2) {
+            align-self: center;
+        }
+
+        :nth-child(3) {
+            align-self: center;
+            justify-self: center;
+        }
+    
+        :nth-child(4) {
+            align-self: center;
+            justify-self: center;
+        }
+    }
+
+    .view-element {
+        border-bottom: 1px solid #e7e7e7;
+        padding: 5px;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 50px 6fr 3fr 1fr;
+        font-weight: 370;
+
+        .book-cover {
+            align-self: center;
+            justify-self: center;
+
+            img {
+                height: 30px;
+            }
+        }
+
+        .book-title {
+            align-self: center;
+            font-weight: 380;
+        }
+
+        .book-author {
+            align-self: center;
+            justify-self: center;
+        }
+
+        .book-clippings-count{
+            align-self: center;
+            justify-self: center;
+        } 
+    }
+}
