@@ -54,7 +54,7 @@ class ClippingsBrowseView(ListView):
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
-class ClippingsGalleryListView(ListView):
+class BooksView(ListView):
     template_name = 'clipping_manager/books.html'
     context_object_name = 'books'
     model = Book
