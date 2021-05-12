@@ -2,7 +2,6 @@
 {% load i18n urlparams %}
 {% load staticfiles sekizai_tags %}
 
-#TODO: move to the seperate file
 {% block content %}
     <div class="container mb-3 ">
         <div class="row">
@@ -34,11 +33,10 @@
     </div>
     <div id="book-view" class="gallery-view">
         <div class="list-header">
-            #TODO: translations
             <div></div>
-            <div>Title</div>
-            <div>Author</div>
-            <div>Clippings</div>
+            <div>{% trans "Title" %}</div>
+            <div>{% trans "Author" %}</div>
+            <div>{% trans "Clippings" %}</div>
         </div>
         {% for book in books %}
             <div class="book-element">
