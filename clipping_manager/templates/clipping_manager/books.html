@@ -2,6 +2,7 @@
 {% load cms_tags i18n crispy_forms_tags urlparams %}
 {% load staticfiles sekizai_tags %}
 
+#TODO: move to the seperate file
 {% block sidebar_main %}
     <div class="container mb-3 ">
         <div class="row">
@@ -43,7 +44,7 @@
                 <a href="{% url 'clipping_manager:browse'%}{% urlparams book=book.id content='' %}">
                     <div class="view-element">
                         <div class="book-cover">
-                            <img src="https://www.rm.com.pl/pol_pl_Komandosi-Hitlera-e-book-1081_1.jpg" alt="#TODO">
+                            <img src="https://www.rm.com.pl/pol_pl_Komandosi-Hitlera-e-book-1081_1.jpg" alt="#TODO: add description">
                         </div>
                         <div class="book-title">
                             {{book.title|default:"unknown"}}
@@ -52,7 +53,7 @@
                             {{book.author_name|default:"unknown"}}
                         </div>
                         <div class="book-clippings-count">
-                            #TODO
+                            {{book.clippings.all|length}}
                         </div>
                     </div>
                 </a>
