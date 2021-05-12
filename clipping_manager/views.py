@@ -59,6 +59,9 @@ class BooksView(ListView):
     context_object_name = 'books'
     model = Book
 
+    def get_queryset(self):
+        return Book.objects.for_user(self.request.user)
+
 class UploadMyClippingsFileView(FormView):
     form_class = UploadKindleClippingsForm
     template_name = 'clipping_manager/upload_kindle_clippings_file.html'
