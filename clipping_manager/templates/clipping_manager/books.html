@@ -1,9 +1,9 @@
-{% extends "sidebar.html" %}
-{% load cms_tags i18n crispy_forms_tags urlparams %}
+{% extends "content.html" %}
+{% load i18n urlparams %}
 {% load staticfiles sekizai_tags %}
 
 #TODO: move to the seperate file
-{% block sidebar_main %}
+{% block content %}
     <div class="container mb-3 ">
         <div class="row">
             <div class="input-group col-10 pl-0">
@@ -34,6 +34,7 @@
     </div>
     <div id="book-view" class="gallery-view">
         <div class="list-header">
+            #TODO: translations
             <div></div>
             <div>Title</div>
             <div>Author</div>
@@ -72,3 +73,5 @@
     {% endaddtoblock %}
 
 {% endblock %}
+
+{% render_block "js" %}
