@@ -54,6 +54,7 @@ class ClippingsBrowseView(ListView):
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
+
 class BooksView(ListView):
     template_name = 'clipping_manager/books.html'
     context_object_name = 'books'
@@ -61,6 +62,7 @@ class BooksView(ListView):
 
     def get_queryset(self):
         return Book.objects.for_user(self.request.user)
+
 
 class UploadMyClippingsFileView(FormView):
     form_class = UploadKindleClippingsForm
