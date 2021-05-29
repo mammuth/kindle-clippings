@@ -4,20 +4,33 @@ services:
   db:
     image: postgres:9.6-alpine
     volumes:
-      - "./data/db:/var/lib/postgresql/data"
+      # - "./data/db:/var/lib/postgresql/data"
+      - ".:/app:rw"
+    networks:
+      db:
+        aliases:
+          - postgres
     ports:
       - "5432:5432"
     env_file: .env-db-local
 
   web:
     build: .
-    links:
-      - "db:postgres"
+    # links:
+    #   - "db:postgres"
+    networks:
+      db:
+        aliases:
+          - postgres
     ports:
       - "8000:80"
     volumes:
       - ".:/app:rw"
+      - "./data:/data:rw"
     command: ./wait-for-it.sh db:5432 -t 300 -- sh -c "python manage.py makemigrations clipping_manager && python manage.py migrate && python manage.py runserver 0.0.0.0:80"
     env_file: .env-local
     depends_on: 
       - db
+
+networks:
+  db:
