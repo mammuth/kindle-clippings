@@ -13,7 +13,7 @@
                         </svg>
                     </span>
                 </div>
-                <input type="text" class="form-control" id="search-book" placeholder="Search a book or an author" aria-label="Search a book">
+                <input type="text" class="form-control" id="search-book" placeholder="{% trans 'Search a book or an author'%}">
             </div>
             <div class="col-2 pr-0">
                 <div class="btn-group" style='float:right'>
@@ -46,10 +46,10 @@
                             <img src="https://i.pinimg.com/736x/8d/13/b1/8d13b15006817344608393deb8b3a9a2--old-book-cover-book-covers.jpg" alt="plain book cover">
                         </div>
                         <div class="book-title">
-                            {{book.title|default:"unknown"}}
+                            {{book.title|default:_("unknown")}}
                         </div>
                         <div class="book-author">
-                            {{book.author_name|default:"unknown"}}
+                            {{book.author_name|default:_("unknown")}}
                         </div>
                         <div class="book-clippings-count">
                             {{book.clippings.all|length}}
