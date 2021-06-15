@@ -21,7 +21,7 @@
         font-size: 0.95rem;
         font-weight: 500;
 
-        :nth-child(2) {
+        .header-title {
             justify-self: start;
         }
     }
@@ -56,7 +56,7 @@
         .list-header {
             grid-template-columns: 50px 8fr 2fr;
 
-            :nth-child(3) {
+            .header-clippings {
                 display: none;
             }
         }

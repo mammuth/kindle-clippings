@@ -295,7 +295,7 @@ a:hover {
   font-weight: 500;
 }
 
-.list-view .list-header :nth-child(2) {
+.list-view .list-header .header-title {
   -ms-grid-column-align: start;
       justify-self: start;
 }
@@ -336,7 +336,7 @@ a:hover {
     -ms-grid-columns: 50px 8fr 2fr;
         grid-template-columns: 50px 8fr 2fr;
   }
-  .list-view .list-header :nth-child(3) {
+  .list-view .list-header .header-clippings {
     display: none;
   }
   .list-view .view-element {
