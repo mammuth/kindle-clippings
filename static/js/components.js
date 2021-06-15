@@ -3,14 +3,14 @@ const booksView = {
     // Hides books which doesn't match the search bar value
     searchBook() {
         const searchInput = document.querySelector('#search-book');
-        const books = document.querySelectorAll('.book-element');
+        const books = document.querySelectorAll('.js-book-element');
     
         function displayMatches() {
             const regex = new RegExp(this.value, 'gi');
     
             books.forEach(book => {
-                const title = book.querySelector('.book-title').textContent;
-                const author = book.querySelector('.book-author').textContent;
+                const title = book.querySelector('.js-book-title').textContent;
+                const author = book.querySelector('.js-book-author').textContent;
     
                 if (title.match(regex) || author.match(regex)) {
                     book.classList.remove('hidden');
