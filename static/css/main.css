@@ -10,6 +10,10 @@ a:hover {
   background: #ffc600;
 }
 
+.hidden {
+  display: none;
+}
+
 .new-tab-container {
   background-image: url("/static/img/background_1.jpg");
   background-size: cover;

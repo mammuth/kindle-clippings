@@ -32,10 +32,10 @@ function searchBook() {
             const author = book.querySelector('.book-author').textContent;
 
             if (title.match(regex) || author.match(regex)) {
-                book.style.display = 'block';
+                book.classList.remove('hidden');
             }
             else {
-                book.style.display = 'none';
+                book.classList.add('hidden');
             }
         })
     }
