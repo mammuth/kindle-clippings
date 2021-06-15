@@ -59,11 +59,11 @@
     </div>
 
     {% addtoblock "js" %}
-        <script src="{% static 'js/helper-functions.js' %}"></script>
+        <script src="{% static 'js/components.js' %}"></script>
         <script>
             window.onload = function() {
-                searchBook();
-                switchView();
+                booksView.searchBook();
+                booksView.switchView();
             };
         </script>
     {% endaddtoblock %}
