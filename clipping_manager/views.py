@@ -61,7 +61,8 @@ class BooksView(ListView):
     model = Book
 
     def get_queryset(self):
-        return Book.objects.for_user(self.request.user)
+        return Book.objects.for_user(self.request.user) \
+                           .annotate(clippings_count = Count("clippings"))
 
 
 class UploadMyClippingsFileView(FormView):
