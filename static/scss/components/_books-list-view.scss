@@ -1,0 +1,72 @@
+@import "../variables";
+@import "../mixins";
+
+.list-view {
+    border: 1px solid $border-gray;
+    
+    display: grid;
+    grid-auto-rows: minmax(60px, auto);
+    
+    @include shadow-1;
+
+    a {
+        @include plain-link;
+    }
+
+    .list-header {
+        background: $backgroud-gray;
+        
+        @include list-grid($border-gray, 50px 6fr 3fr 1fr);
+
+        font-size: 0.95rem;
+        font-weight: 500;
+
+        .header-title {
+            justify-self: start;
+        }
+    }
+
+    .view-element {
+        @include list-grid($border-light-gray, 50px 6fr 3fr 1fr);
+
+        font-weight: 370;
+
+        transition: backgroud 0.1s cubic-bezier(0, 0.03, 0.23, 0.94);
+
+        &:hover {
+            background: $backgroud-light-gray;
+        }
+
+        .book-cover {
+            img {
+                height: 30px;
+            }
+        }
+
+        .book-title {
+            justify-self: start;
+            font-weight: 380;
+        }
+    }
+}
+
+// Hide author for < tablet screens
+.list-view {
+    @media only screen and (max-width: $tablet) {
+        .list-header {
+            grid-template-columns: 50px 8fr 2fr;
+
+            .header-clippings {
+                display: none;
+            }
+        }
+
+        .view-element {
+            grid-template-columns: 50px 8fr 2fr;
+
+            .book-author {
+                display: none;
+            }
+        }
+    }
+}

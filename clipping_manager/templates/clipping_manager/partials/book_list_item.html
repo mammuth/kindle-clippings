@@ -1,0 +1,20 @@
+{% load urlparams %}
+
+<div class="js-book-element">
+    <a href="{% url 'clipping_manager:browse'%}{% urlparams book=book.id content='' %}">
+        <div class="view-element">
+            <div class="book-cover">
+                <img src="https://i.pinimg.com/736x/8d/13/b1/8d13b15006817344608393deb8b3a9a2--old-book-cover-book-covers.jpg" alt="plain book cover">
+            </div>
+            <div class="js-book-title book-title">
+                {{book.title|default:_("unknown")}}
+            </div>
+            <div class="js-book-author book-author">
+                {{book.author_name|default:_("unknown")}}
+            </div>
+            <div class="book-clippings-count">
+                {{book.clippings_count}}
+            </div>
+        </div>
+    </a>
+</div>
