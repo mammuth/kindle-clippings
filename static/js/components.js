@@ -35,12 +35,12 @@ const booksView = {
             // Swap buttons' colors
             buttonToDisable.classList.remove('btn-dark');
             buttonToDisable.classList.add('btn-light');
-    
+
             this.classList.remove('btn-light');
             this.classList.add('btn-dark');
-    
+
             // Switch the book view
-            bookView.className = (this === galleryBtn) ? 'gallery-view' : 'list-view';
+            bookView.className = this.dataset.view;
         }
     
         galleryBtn.addEventListener('click', viewControl);
