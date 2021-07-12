@@ -60,6 +60,11 @@ class Clipping(models.Model):
         null=True,
     )
 
+    deleted = models.BooleanField(
+        verbose_name = _('Deleted'),
+        default = False
+    )
+
     class Meta:
         verbose_name = _('Clipping')
         verbose_name_plural = _('Clippings')
