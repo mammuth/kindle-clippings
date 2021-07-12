@@ -61,14 +61,14 @@
 
     <script>
         const deleteButtons = document.querySelectorAll('.js-delete-clipping');
-        const modalDeleteBtn = document.querySelector('#modal_delete_clipping .js-modal-delete');
+        const modalClippingInput = document.querySelector('#modal_delete_clipping .js-clipping-id-input');
 
         deleteButtons.forEach(btn => btn.addEventListener('click', function (e) {
             // Get clipping's ID
             const clippingId = this.dataset.clippingId;
 
-            // Inject it to the modal's delete button
-            modalDeleteBtn.value = clippingId;
+            // Inject it to the modal's model clipping's id input
+            modalClippingInput.value = clippingId;
         }));
     </script>
 {% endblock %}

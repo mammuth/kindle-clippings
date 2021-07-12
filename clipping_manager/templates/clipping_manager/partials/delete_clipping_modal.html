@@ -14,9 +14,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
-                <form action="{% url 'clipping_manager:books'%}" method="GET">
+                <form action="{% url 'clipping_manager:delete-clipping'%}" method="POST">
                     {% csrf_token %}
-                    <button type="button" class="btn btn-danger js-modal-delete">{% trans "Delete" %}</button>
+                    <input type="hidden" name="clipping-id" class="js-clipping-id-input">
+                    <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
                 </form>
             </div>
         </div>
