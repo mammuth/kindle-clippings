@@ -13,12 +13,11 @@
                 {% trans "Are you sure you want to delete this clipping? This procedure is irreversible!" %}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
                 <form action="{% url 'clipping_manager:books'%}" method="GET">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger modal-delete">{% trans "Delete" %}</button>
+                    <button type="button" class="btn btn-danger js-modal-delete">{% trans "Delete" %}</button>
                 </form>
-
             </div>
         </div>
     </div>
