@@ -30,7 +30,6 @@ logger = logging.getLogger(__name__)
 class DashboardView(TemplateView):
     template_name = 'clipping_manager/dashboard.html'
 
-
 class ClippingsBrowseView(ListView):
     template_name = 'clipping_manager/browse.html'
     context_object_name = 'clippings'
@@ -50,10 +49,31 @@ class ClippingsBrowseView(ListView):
         return ctx
 
     def get_queryset(self):
-        qs = Clipping.objects.select_related('book').for_user(user=self.request.user)
+        qs = Clipping.objects.select_related('book').for_user(user=self.request.user) \
+                                                    .exclude(content__exact='')
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
+class DeleteClipping(View):
+    http_method_names = ['post']
+
+    def post(self, request):
+        clipping_id = int(request.POST['clipping-id'])
+        clipping_to_delete = Clipping.objects.get(id=clipping_id)
+
+        # Clear eveything besides content_hash
+        # and update deleted status
+        clipping_to_delete.content = ""
+        clipping_to_delete.book = None
+        clipping_to_delete.author_name = ""
+        clipping_to_delete.url = ""
+        clipping_to_delete.deleted = True
+        clipping_to_delete.save()
+
+        #TODO delete the book if no clippings?
+        
+        return redirect(reverse_lazy("clipping_manager:browse"))
+        
 
 class BooksView(ListView):
     template_name = 'clipping_manager/books.html'
