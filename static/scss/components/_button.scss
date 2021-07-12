@@ -30,6 +30,7 @@
     line-height: 0;
     
     .bi-trash {
+        fill: lighten($color-gray-1, 10%);
         transition: fill 0.15s;
     }
 

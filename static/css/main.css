@@ -74,6 +74,7 @@ a:hover {
 }
 
 .btn-delete .bi-trash {
+  fill: #898989;
   -webkit-transition: fill 0.15s;
   transition: fill 0.15s;
 }
