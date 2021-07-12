@@ -60,7 +60,6 @@ class DeleteClipping(View):
     def post(self, request):
         clipping_id = int(request.POST['clipping-id'])
         clipping_to_delete = Clipping.objects.get(id=clipping_id)
-
         # Clear eveything besides content_hash
         # and update deleted status
         clipping_to_delete.content = ""
@@ -69,10 +68,8 @@ class DeleteClipping(View):
         clipping_to_delete.url = ""
         clipping_to_delete.deleted = True
         clipping_to_delete.save()
-
-        #TODO delete the book if no clippings?
         
-        return redirect(reverse_lazy("clipping_manager:browse"))
+        return redirect(request.META['HTTP_REFERER'])
         
 
 class BooksView(ListView):
