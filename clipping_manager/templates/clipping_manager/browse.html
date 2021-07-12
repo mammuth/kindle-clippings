@@ -40,6 +40,7 @@
 {% block sidebar_main %}
     {% static_placeholder "manage_above_list" %}
     <div class="card">
+        {% include "clipping_manager/partials/delete_clipping_modal.html" %}
         <div class="card-header">
             <h1>{% trans "Your Clippings" %}</h1>
         </div>
