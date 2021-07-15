@@ -1,6 +1,7 @@
 // ------- browse.html -------
 // Highlights the searched phrase ('Content contains') in clippings 
 function highlightClippings(wordToHighlight) {
+    console.log(wordToHighlight);
     // If empty -> stop the function
     if (!wordToHighlight) return;
 
@@ -16,4 +17,19 @@ function highlightClippings(wordToHighlight) {
 
         clipping.innerHTML = highlightedClipping;
     });
+}
+
+// Injects the clipping's id to the modal's form
+// when a user clicks the delete icon
+function deleteModelControl() {
+    const deleteButtons = document.querySelectorAll('.js-delete-clipping');
+    const modalClippingInput = document.querySelector('#modal_delete_clipping .js-clipping-id-input');
+
+    deleteButtons.forEach(btn => btn.addEventListener('click', function (e) {
+        // Get clipping's ID
+        const clippingId = this.dataset.clippingId;
+
+        // Inject it to the modal
+        modalClippingInput.value = clippingId;
+    }));
 }

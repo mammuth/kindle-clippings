@@ -28,3 +28,7 @@ class BookQuerySetManager(models.QuerySet):
 
     def for_user(self, user):
         return self.filter(user=user)
+
+    def not_empty(self):
+        book_count = self.annotate(clippings_count = Count('clippings'))
+        return book_count.filter(clippings_count__gt=0)

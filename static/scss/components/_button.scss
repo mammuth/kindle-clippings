@@ -23,3 +23,22 @@
 .btn-text {
     @include btn-text();
 }
+
+.btn-delete {
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+    
+    .bi-trash {
+        fill: lighten($color-gray-1, 10%);
+        transition: fill 0.15s;
+    }
+
+    &:hover .bi-trash {
+        fill: rgba(255, 0, 0, 0.568);
+    }
+
+    &:focus {
+        box-shadow: none;
+    }
+}

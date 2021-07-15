@@ -21,7 +21,7 @@ from django.views.generic.base import View
 from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
 from clipping_manager.filters import ClippingFilter
 from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings
-from clipping_manager.models import Clipping, Book
+from clipping_manager.models import Clipping, Book, clipping
 from clipping_manager.models.email_delivery import EmailDelivery
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,6 @@ logger = logging.getLogger(__name__)
 
 class DashboardView(TemplateView):
     template_name = 'clipping_manager/dashboard.html'
-
 
 class ClippingsBrowseView(ListView):
     template_name = 'clipping_manager/browse.html'
@@ -50,20 +49,42 @@ class ClippingsBrowseView(ListView):
         return ctx
 
     def get_queryset(self):
-        qs = Clipping.objects.select_related('book').for_user(user=self.request.user)
+        qs = Clipping.objects.select_related('book').for_user(user=self.request.user) \
+                                                    .exclude(deleted = True)
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
+class DeleteClipping(View):
+    http_method_names = ['post']
 
+    def post(self, request):
+        clipping_id = int(request.POST['clipping-id'])
+        clipping_to_delete = Clipping.objects.get(id=clipping_id)
+        clipping_book = clipping_to_delete.book
+        
+        # Clear eveything besides content_hash
+        # and update deleted status
+        clipping_to_delete.content = ""
+        clipping_to_delete.book = None
+        clipping_to_delete.author_name = ""
+        clipping_to_delete.url = ""
+        clipping_to_delete.deleted = True
+        clipping_to_delete.save()
+        
+        # For non-empty books -> previous URL
+        if clipping_book.clippings.count():
+            return redirect(request.META['HTTP_REFERER'])
+    
+        # For empty books -> back to main browse page
+        return redirect(reverse_lazy('clipping_manager:browse'))
+        
 class BooksView(ListView):
     template_name = 'clipping_manager/books.html'
     context_object_name = 'books'
     model = Book
 
     def get_queryset(self):
-        return Book.objects.for_user(self.request.user) \
-                           .annotate(clippings_count = Count("clippings"))
-
+        return Book.objects.for_user(self.request.user).not_empty()
 
 class UploadMyClippingsFileView(FormView):
     form_class = UploadKindleClippingsForm
@@ -206,12 +227,11 @@ class EmailDeliveryView(SuccessMessageMixin, UpdateView):
         delivery, _ = EmailDelivery.objects.get_or_create(user=self.request.user)
         return delivery
 
-
 class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
     def get(self, request, *args, **kwargs):
-        clipping = Clipping.objects.select_related('book').for_user(self.request.user).random()
+        clipping = Clipping.objects.select_related('book').for_user(self.request.user).not_empty().random()
         self.clipping = clipping
         if not clipping:
             messages.add_message(self.request, messages.WARNING, _('You need to import your highlights first!'))
@@ -248,10 +268,10 @@ class PersonalStatisticsView(TemplateView):
     template_name = 'clipping_manager/personal_statistics.html'
 
     def get_statistics(self):
-        clips = Clipping.objects.for_user(self.request.user)
-        books = Book.objects.annotate(models.Count('clippings')).for_user(self.request.user)
+        clips = Clipping.objects.for_user(self.request.user).exclude(deleted=True)
+        books = Book.objects.for_user(self.request.user).not_empty()
 
-        books_ordered = books.order_by('clippings__count')
+        books_ordered = books.order_by('clippings_count')
         book_most_clips = books_ordered.last()
         if book_most_clips:
             book_most_clips_value = f'{book_most_clips.title} ({book_most_clips.clippings.count()} clippings)'
@@ -264,7 +284,7 @@ class PersonalStatisticsView(TemplateView):
         else:
             book_least_clips_value = ''
 
-        book_clippings_counts = books.order_by('-clippings__count').values_list('clippings__count', flat=True)
+        book_clippings_counts = books.order_by('-clippings_count').values_list('clippings_count', flat=True)
         if book_clippings_counts:
             mean_clippings_per_book = int(statistics.mean(list(book_clippings_counts)))
         else:
@@ -276,10 +296,17 @@ class PersonalStatisticsView(TemplateView):
         longest_clip = clip_number_of_words[-1] if len(clip_number_of_words) > 0 else ''
         shortest_clip = clip_number_of_words[0] if len(clip_number_of_words) > 0 else ''
 
-        users_with_more_clips = User.objects.exclude(clippings__isnull=True).annotate(models.Count('clippings'))\
-            .filter(clippings__count__gt=clips.count()).count()
+        users_with_more_clips = User.objects.exclude(clippings__isnull=True)\
+                                            .annotate(
+                                                clipings_count=Count(
+                                                    models.Case(models.When(clippings__deleted=False, then=1))
+                                                )
+                                            )\
+                                            .filter(clipings_count__gt=clips.count())\
+                                            .count()            
         clips_rank = users_with_more_clips + 1
 
+        #TODO Filter books with no clippings before comparing book count
         users_with_more_books = User.objects.exclude(books__isnull=True).annotate(models.Count('books'))\
             .filter(books__count__gt=books.count()).count()
         books_rank = users_with_more_books + 1
