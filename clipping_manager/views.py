@@ -230,12 +230,11 @@ class EmailDeliveryView(SuccessMessageMixin, UpdateView):
         delivery, _ = EmailDelivery.objects.get_or_create(user=self.request.user)
         return delivery
 
-#TODO exclude empty clippings
 class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
     def get(self, request, *args, **kwargs):
-        clipping = Clipping.objects.select_related('book').for_user(self.request.user).random()
+        clipping = Clipping.objects.select_related('book').for_user(self.request.user).not_empty().random()
         self.clipping = clipping
         if not clipping:
             messages.add_message(self.request, messages.WARNING, _('You need to import your highlights first!'))
