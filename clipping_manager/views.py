@@ -2,6 +2,7 @@ import logging
 import statistics
 import traceback
 from codecs import EncodedFile
+from collections import Counter
 
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -304,14 +305,13 @@ class PersonalStatisticsView(TemplateView):
                                             .filter(clippings_count__gt=clips.count())\
                                             .count()            
         clips_rank = users_with_more_clips + 1
-        #TODO Filter books with no clippings before comparing book count
-        # books_grouped_by_user = Book.objects.not_empty().values('user_id').annotate(total=Count('user_id')).order_by('total')
-        books_grouped_by_user = Book.objects.not_empty().values()
-        print(books_grouped_by_user)
 
-        #TODO Filter books with no clippings before comparing book count
-        users_with_more_books = User.objects.exclude(books__isnull=True).annotate(models.Count('books'))\
-            .filter(books__count__gt=books.count()).count()
+        # Create dict(user_1: book_count_1, ...)
+        books_count_by_user = Counter(Book.objects.not_empty().values_list('user_id', flat=True))
+        
+        users_with_more_books = len([key for key in books_count_by_user 
+                                    if books_count_by_user[key] > books_count_by_user[self.request.user.id]])
+
         books_rank = users_with_more_books + 1
 
         mean_word_count = int(statistics.mean(clip_number_of_words)) if len(clip_number_of_words) > 1 else ''
