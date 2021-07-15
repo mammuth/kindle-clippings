@@ -306,7 +306,7 @@ class PersonalStatisticsView(TemplateView):
                                                     models.Case(models.When(clippings__deleted=False, then=1))
                                                 )
                                             )\
-                                            .filter(clippings__count__gt=clips.count())\
+                                            .filter(clipings_count__gt=clips.count())\
                                             .count()            
         clips_rank = users_with_more_clips + 1
 
