@@ -21,7 +21,7 @@ from django.views.generic.base import View
 from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
 from clipping_manager.filters import ClippingFilter
 from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings
-from clipping_manager.models import Clipping, Book
+from clipping_manager.models import Clipping, Book, clipping
 from clipping_manager.models.email_delivery import EmailDelivery
 
 logger = logging.getLogger(__name__)
@@ -272,7 +272,7 @@ class PersonalStatisticsView(TemplateView):
     template_name = 'clipping_manager/personal_statistics.html'
 
     def get_statistics(self):
-        clips = Clipping.objects.for_user(self.request.user).exclude(deleted = True)
+        clips = Clipping.objects.for_user(self.request.user).exclude(deleted=True)
         books = Book.objects.for_user(self.request.user).not_empty()
 
         books_ordered = books.order_by('clippings_count')
@@ -299,11 +299,18 @@ class PersonalStatisticsView(TemplateView):
         clip_number_of_words.sort()
         longest_clip = clip_number_of_words[-1] if len(clip_number_of_words) > 0 else ''
         shortest_clip = clip_number_of_words[0] if len(clip_number_of_words) > 0 else ''
-        #TODO filter deleted books and clippings
-        users_with_more_clips = User.objects.exclude(clippings__isnull=True).annotate(models.Count('clippings'))\
-            .filter(clippings__count__gt=clips.count()).count()
+
+        users_with_more_clips = User.objects.exclude(clippings__isnull=True)\
+                                            .annotate(
+                                                clipings_count=Count(
+                                                    models.Case(models.When(clippings__deleted=False, then=1))
+                                                )
+                                            )\
+                                            .filter(clippings__count__gt=clips.count())\
+                                            .count()            
         clips_rank = users_with_more_clips + 1
 
+        #TODO Filter books with no clippings before comparing book count
         users_with_more_books = User.objects.exclude(books__isnull=True).annotate(models.Count('books'))\
             .filter(books__count__gt=books.count()).count()
         books_rank = users_with_more_books + 1
