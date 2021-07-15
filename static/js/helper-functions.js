@@ -1,6 +1,7 @@
 // ------- browse.html -------
 // Highlights the searched phrase ('Content contains') in clippings 
 function highlightClippings(wordToHighlight) {
+    console.log(wordToHighlight);
     // If empty -> stop the function
     if (!wordToHighlight) return;
 
