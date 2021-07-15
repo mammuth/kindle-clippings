@@ -309,6 +309,7 @@ class PersonalStatisticsView(TemplateView):
         books_grouped_by_user = Book.objects.not_empty().values()
         print(books_grouped_by_user)
 
+        #TODO Filter books with no clippings before comparing book count
         users_with_more_books = User.objects.exclude(books__isnull=True).annotate(models.Count('books'))\
             .filter(books__count__gt=books.count()).count()
         books_rank = users_with_more_books + 1
