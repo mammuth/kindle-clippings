@@ -57,20 +57,8 @@
 
     {% addtoblock "js" %}
         <script src="{% static 'js/helper-functions.js' %}" onload="highlightClippings('{{contains}}')"></script>
+        <script src="{% static 'js/helper-functions.js' %}" onload="deleteModelControl()"></script>
     {% endaddtoblock %}
-
-    <script>
-        const deleteButtons = document.querySelectorAll('.js-delete-clipping');
-        const modalClippingInput = document.querySelector('#modal_delete_clipping .js-clipping-id-input');
-
-        deleteButtons.forEach(btn => btn.addEventListener('click', function (e) {
-            // Get clipping's ID
-            const clippingId = this.dataset.clippingId;
-
-            // Inject it to the modal's model clipping's id input
-            modalClippingInput.value = clippingId;
-        }));
-    </script>
 {% endblock %}
 
 {% render_block "js" %}
