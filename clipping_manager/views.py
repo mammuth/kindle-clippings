@@ -78,9 +78,6 @@ class DeleteClipping(View):
         # For empty books -> back to main browse page
         return redirect(reverse_lazy('clipping_manager:browse'))
         
-        
-        
-
 class BooksView(ListView):
     template_name = 'clipping_manager/books.html'
     context_object_name = 'books'
