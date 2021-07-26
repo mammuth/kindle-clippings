@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
 
-from clipping_manager.models import Clipping, Book, EmailDelivery
+from clipping_manager.models import Clipping, Book, EmailDelivery, MyClippingsFiles
 
 
 @admin.register(Clipping)
@@ -22,6 +22,11 @@ class EmailDeliveryAdmin(admin.ModelAdmin):
     search_fields = ('user', 'user__email')
     list_filter = ('user', )
     list_display = ('user', 'interval', 'last_delivery', )
+
+@admin.register(MyClippingsFiles)
+class MyClippingsFilesAdmin(admin.ModelAdmin):
+    search_fields = ('content')
+    list_display = ('content', 'timestamp',)
 
 
 # Custom UserAdmin
