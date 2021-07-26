@@ -81,7 +81,11 @@ class UploadMyClippingsFileView(FormView):
             clips = kindle_clipping_parser.get_clips_from_text(clippings_file_content)
 
             # Save the file in db
-            MyClippingsFiles.objects.create(content=clippings_file_content)
+            language_header = self.request.META.get('HTTP_ACCEPT_LANGUAGE')
+            MyClippingsFiles.objects.create_file(
+                                content=clippings_file_content,
+                                language_header=language_header
+                            )
         except Exception as e:
             logger.error(f'Error parsing a clippings file.', exc_info=True)
             messages.add_message(

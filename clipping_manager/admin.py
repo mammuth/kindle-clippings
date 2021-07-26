@@ -25,8 +25,8 @@ class EmailDeliveryAdmin(admin.ModelAdmin):
 
 @admin.register(MyClippingsFiles)
 class MyClippingsFilesAdmin(admin.ModelAdmin):
-    search_fields = ('content',)
-    list_display = ('timestamp',)
+    search_fields = ('language_header',)
+    list_display = ('language_header', 'timestamp',)
 
 
 # Custom UserAdmin
