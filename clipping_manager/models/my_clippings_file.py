@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from clipping_manager.managers import MyClippingsFilesManager
 
 
-class MyClippingsFiles(models.Model):
+class MyClippingsFile(models.Model):
     objects = MyClippingsFilesManager()
 
     content = models.TextField(
@@ -11,8 +11,8 @@ class MyClippingsFiles(models.Model):
         blank=False
     )
 
-    timestamp = models.DateTimeField(
-        verbose_name=_('Timestamp'),
+    uploaded_at = models.DateTimeField(
+        verbose_name=_('Upload datetime'),
         auto_now_add=True,
         blank=False
     )
