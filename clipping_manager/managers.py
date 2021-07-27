@@ -34,7 +34,7 @@ class MyClippingsFileManager(models.Manager):
         # Make sure file creation proceeds
         # even if language_header > field's max_length
         if language_header:
-            language_header = language_header if len(language_header) < 255 else language_header[:255]
+            language_header = language_header if len(language_header) <= 255 else language_header[:255]
 
         my_clippings_file = self.create(content=content, language_header=language_header)
 
