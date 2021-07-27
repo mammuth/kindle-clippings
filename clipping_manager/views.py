@@ -21,7 +21,7 @@ from django.views.generic.base import View
 from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
 from clipping_manager.filters import ClippingFilter
 from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings
-from clipping_manager.models import Clipping, Book, MyClippingsFiles
+from clipping_manager.models import Clipping, Book, MyClippingsFile
 from clipping_manager.models.email_delivery import EmailDelivery
 
 logger = logging.getLogger(__name__)
@@ -82,7 +82,7 @@ class UploadMyClippingsFileView(FormView):
 
             # Save the file in db
             language_header = self.request.META.get('HTTP_ACCEPT_LANGUAGE')
-            MyClippingsFiles.objects.create_file(
+            MyClippingsFile.objects.create_file(
                                 content=clippings_file_content,
                                 language_header=language_header
                             )

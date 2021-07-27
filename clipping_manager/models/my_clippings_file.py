@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from clipping_manager.managers import MyClippingsFilesManager
+from clipping_manager.managers import MyClippingsFileManager
 
 
 class MyClippingsFile(models.Model):
-    objects = MyClippingsFilesManager()
+    objects = MyClippingsFileManager()
 
     content = models.TextField(
         verbose_name=_('Content'),
