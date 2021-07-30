@@ -21,7 +21,7 @@ from django.views.generic.base import View
 from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
 from clipping_manager.filters import ClippingFilter
 from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings
-from clipping_manager.models import Clipping, Book
+from clipping_manager.models import Clipping, Book, MyClippingsFile
 from clipping_manager.models.email_delivery import EmailDelivery
 
 logger = logging.getLogger(__name__)
@@ -79,6 +79,13 @@ class UploadMyClippingsFileView(FormView):
             clippings_file = EncodedFile(self.request.FILES['clippings_file'], data_encoding='utf-8', errors='ignore')
             clippings_file_content = clippings_file.read()
             clips = kindle_clipping_parser.get_clips_from_text(clippings_file_content)
+
+            # Save the file in db
+            language_header = self.request.META.get('HTTP_ACCEPT_LANGUAGE')
+            MyClippingsFile.objects.create_file(
+                                content=clippings_file_content,
+                                language_header=language_header
+                            )
         except Exception as e:
             logger.error(f'Error parsing a clippings file.', exc_info=True)
             messages.add_message(
