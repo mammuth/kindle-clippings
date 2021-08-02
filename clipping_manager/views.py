@@ -61,14 +61,7 @@ class DeleteClipping(View):
         clipping_to_delete = Clipping.objects.get(id=clipping_id)
         clipping_book = clipping_to_delete.book
         
-        # Clear eveything besides content_hash
-        # and update deleted status
-        clipping_to_delete.content = ""
-        clipping_to_delete.book = None
-        clipping_to_delete.author_name = ""
-        clipping_to_delete.url = ""
-        clipping_to_delete.deleted = True
-        clipping_to_delete.save()
+        clipping_to_delete.clear()
         
         # For non-empty books -> previous URL
         if clipping_book.clippings.count():

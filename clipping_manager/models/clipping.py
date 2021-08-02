@@ -79,6 +79,16 @@ class Clipping(models.Model):
         self._generate_content_hash()
         super(Clipping, self).save(*args, **kwargs)
 
+    def clear(self):
+        # Clear eveything besides content_hash
+        # and update deleted status
+        self.content = ""
+        self.book = None
+        self.author_name = ""
+        self.url = ""
+        self.deleted = True
+        super().save()
+
     def _generate_content_hash(self) -> None:
         # Generate hash of the content and store it in content_hash
         # This is used for unique_together which is not possible with content directly due ot its arbitrary length
