@@ -49,8 +49,7 @@ class ClippingsBrowseView(ListView):
         return ctx
 
     def get_queryset(self):
-        qs = Clipping.objects.select_related('book').for_user(user=self.request.user) \
-                                                    .exclude(deleted = True)
+        qs = Clipping.objects.select_related('book').for_user(user=self.request.user)
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
@@ -268,7 +267,7 @@ class PersonalStatisticsView(TemplateView):
     template_name = 'clipping_manager/personal_statistics.html'
 
     def get_statistics(self):
-        clips = Clipping.objects.for_user(self.request.user).exclude(deleted=True)
+        clips = Clipping.objects.for_user(self.request.user)
         books = Book.objects.for_user(self.request.user).not_empty()
 
         books_ordered = books.order_by('clippings_count')
@@ -298,11 +297,11 @@ class PersonalStatisticsView(TemplateView):
 
         users_with_more_clips = User.objects.exclude(clippings__isnull=True)\
                                             .annotate(
-                                                clipings_count=Count(
+                                                clippings_count=Count(
                                                     models.Case(models.When(clippings__deleted=False, then=1))
                                                 )
                                             )\
-                                            .filter(clipings_count__gt=clips.count())\
+                                            .filter(clippings_count__gt=clips.count())\
                                             .count()            
         clips_rank = users_with_more_clips + 1
 

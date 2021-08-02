@@ -4,12 +4,12 @@ from django.db import models
 from django.db.models import Count
 
 
-class ClippingQuerySetManager(models.QuerySet):
+class ClippingQuerySet(models.QuerySet):
 
     def for_user(self, user):
         return self.filter(user=user)
 
-    def random(self, limit=None):
+    def random(self, limit):
         count = self.aggregate(count=Count('id'))['count']
         try:
             clippings = []
@@ -22,6 +22,24 @@ class ClippingQuerySetManager(models.QuerySet):
             return clippings  # return list
         except ValueError:
             return self.none()
+
+
+class ExistingClippingsManager(models.Manager):
+    
+    def get_queryset(self):
+        return ClippingQuerySet(self.model, using=self._db).exclude(deleted=True)
+    
+    def for_user(self, user):
+        return self.get_queryset().for_user(user)
+
+    def random(self, limit=None):
+        return self.get_queryset().random(limit)
+
+
+class AllClippingsManager(ExistingClippingsManager):
+
+    def get_queryset(self):
+        return ClippingQuerySet(self.model, using=self._db)
 
 
 class BookQuerySetManager(models.QuerySet):

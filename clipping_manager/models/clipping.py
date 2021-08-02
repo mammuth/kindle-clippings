@@ -3,12 +3,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import hashlib
 
-from clipping_manager.managers import ClippingQuerySetManager
+from clipping_manager.managers import ExistingClippingsManager, AllClippingsManager
 
 
 class Clipping(models.Model):
 
-    objects = ClippingQuerySetManager().as_manager()
+    objects = ExistingClippingsManager()
+    with_deleted = AllClippingsManager()
 
     #
     # Base fields
