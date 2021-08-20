@@ -50,3 +50,15 @@ class BookQuerySetManager(models.QuerySet):
     def not_empty(self):
         book_count = self.annotate(clippings_count = Count('clippings'))
         return book_count.filter(clippings_count__gt=0)
+
+
+class MyClippingsFileManager(models.Manager):
+    def create_file(self, content, language_header):
+        # Make sure file creation proceeds
+        # even if language_header > field's max_length
+        if language_header:
+            language_header = language_header if len(language_header) <= 255 else language_header[:255]
+
+        my_clippings_file = self.create(content=content, language_header=language_header)
+
+        return my_clippings_file
