@@ -61,7 +61,7 @@ class DeleteClipping(View):
         clipping_to_delete = Clipping.objects.get(id=clipping_id)
         clipping_book = clipping_to_delete.book
         
-        clipping_to_delete.clear()
+        clipping_to_delete.soft_delete()
         
         # For non-empty books -> previous URL
         if clipping_book.clippings.count():
@@ -297,8 +297,11 @@ class PersonalStatisticsView(TemplateView):
                                             .filter(clippings_count__gt=clips.count())\
                                             .count()            
         clips_rank = users_with_more_clips + 1
-
         #TODO Filter books with no clippings before comparing book count
+        # books_grouped_by_user = Book.objects.not_empty().values('user_id').annotate(total=Count('user_id')).order_by('total')
+        books_grouped_by_user = Book.objects.not_empty().values()
+        print(books_grouped_by_user)
+
         users_with_more_books = User.objects.exclude(books__isnull=True).annotate(models.Count('books'))\
             .filter(books__count__gt=books.count()).count()
         books_rank = users_with_more_books + 1

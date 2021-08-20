@@ -79,7 +79,7 @@ class Clipping(models.Model):
         self._generate_content_hash()
         super(Clipping, self).save(*args, **kwargs)
 
-    def clear(self):
+    def soft_delete(self):
         # Clear eveything besides content_hash
         # and update deleted status
         self.content = ""
