@@ -76,7 +76,9 @@ class Clipping(models.Model):
         return f'{self.content[:100]}...'
 
     def save(self, *args, **kwargs):
-        self._generate_content_hash()
+        # Genereate hash only when creating
+        if self._state.adding:
+            self._generate_content_hash()
         super(Clipping, self).save(*args, **kwargs)
 
     def soft_delete(self):
@@ -87,7 +89,7 @@ class Clipping(models.Model):
         self.author_name = ""
         self.url = ""
         self.deleted = True
-        super().save()
+        self.save()
 
     def _generate_content_hash(self) -> None:
         # Generate hash of the content and store it in content_hash
