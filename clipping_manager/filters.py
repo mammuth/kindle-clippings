@@ -9,7 +9,7 @@ class ClippingFilter(django_filters.FilterSet):
     """
     content = django_filters.CharFilter(lookup_expr='icontains')
     book = django_filters.ModelChoiceFilter(
-        queryset=lambda req: Book.objects.for_user(req.user) if req is not None else Book.objects.none(),
+        queryset=lambda req: Book.objects.for_user(req.user).not_empty() if req is not None else Book.objects.none(),
     )
 
     class Meta:
