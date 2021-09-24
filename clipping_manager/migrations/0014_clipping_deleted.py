@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('clipping_manager', '0012_data_generate_clipping_hashs'),
+        ('clipping_manager', '0013_myclippingsfile'),
     ]
 
     operations = [
