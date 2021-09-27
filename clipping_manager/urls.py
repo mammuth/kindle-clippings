@@ -4,11 +4,13 @@ from django.contrib.auth.decorators import login_required
 
 from clipping_manager.views import UploadMyClippingsFileView, RandomClippingView, RandomClippingFullscreenView, \
     DashboardView, AdminStatisticsView, EmailDeliveryView, DailyEmailDeliveryView, BiweeklyEmailDeliveryView, \
-    WeeklyEmailDeliveryView, ClippingsBrowseView, UploadTextFileClippingsView, PersonalStatisticsView, BooksView
+    WeeklyEmailDeliveryView, ClippingsBrowseView, UploadTextFileClippingsView, PersonalStatisticsView, BooksView, \
+    DeleteClipping
 
 urlpatterns = [
     url(r'^$', login_required(DashboardView.as_view()), name='dashboard'),
     url(r'^browse/$', login_required(ClippingsBrowseView.as_view()), name='browse'),
+    url(r'^delete-clipping/$', login_required(DeleteClipping.as_view()), name='delete-clipping'),
     url(r'^books/$', login_required(BooksView.as_view()), name='books'),
     url(r'^upload/$', login_required(UploadMyClippingsFileView.as_view()), name='upload'),
     url(r'^upload-plaintext/$', login_required(UploadTextFileClippingsView.as_view()), name='upload-plaintext'),

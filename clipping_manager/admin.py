@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import query
 
 from clipping_manager.models import Clipping, Book, EmailDelivery, MyClippingsFile
 
@@ -10,6 +11,12 @@ from clipping_manager.models import Clipping, Book, EmailDelivery, MyClippingsFi
 class ClippingAdmin(admin.ModelAdmin):
     list_filter = ('user', 'book', )
     search_fields = ('content', )
+    actions = ['soft_delete_selected']
+
+    def soft_delete_selected(self, request, queryset):
+        for obj in queryset:
+            obj.soft_delete()
+    soft_delete_selected.short_description = 'Soft delete selected Clippings'
 
 
 @admin.register(Book)

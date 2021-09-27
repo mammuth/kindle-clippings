@@ -3,12 +3,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import hashlib
 
-from clipping_manager.managers import ClippingQuerySetManager
+from clipping_manager.managers import ExistingClippingsManager, AllClippingsManager
 
 
 class Clipping(models.Model):
 
-    objects = ClippingQuerySetManager().as_manager()
+    objects = ExistingClippingsManager()
+    with_deleted = AllClippingsManager()
 
     #
     # Base fields
@@ -60,6 +61,11 @@ class Clipping(models.Model):
         null=True,
     )
 
+    deleted = models.BooleanField(
+        verbose_name = _('Deleted'),
+        default = False
+    )
+
     class Meta:
         verbose_name = _('Clipping')
         verbose_name_plural = _('Clippings')
@@ -70,8 +76,20 @@ class Clipping(models.Model):
         return f'{self.content[:100]}...'
 
     def save(self, *args, **kwargs):
-        self._generate_content_hash()
+        # Genereate hash only when creating
+        if self._state.adding:
+            self._generate_content_hash()
         super(Clipping, self).save(*args, **kwargs)
+
+    def soft_delete(self):
+        # Clear eveything besides content_hash
+        # and update deleted status
+        self.content = ""
+        self.book = None
+        self.author_name = ""
+        self.url = ""
+        self.deleted = True
+        self.save()
 
     def _generate_content_hash(self) -> None:
         # Generate hash of the content and store it in content_hash
