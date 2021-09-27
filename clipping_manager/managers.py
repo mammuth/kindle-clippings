@@ -9,7 +9,7 @@ class ClippingQuerySet(models.QuerySet):
     def for_user(self, user):
         return self.filter(user=user)
 
-    def random(self, limit):
+    def random(self, limit=None):
         count = self.aggregate(count=Count('id'))['count']
         try:
             clippings = []

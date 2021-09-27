@@ -231,8 +231,9 @@ class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
     def get(self, request, *args, **kwargs):
-        clipping = Clipping.objects.select_related('book').for_user(self.request.user).not_empty().random()
+        clipping = Clipping.objects.select_related('book').for_user(self.request.user).random()
         self.clipping = clipping
+
         if not clipping:
             messages.add_message(self.request, messages.WARNING, _('You need to import your highlights first!'))
             return redirect('clipping_manager:upload')
