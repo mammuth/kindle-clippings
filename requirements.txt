@@ -88,4 +88,4 @@ uwsgi==2.0.18
 webencodings==0.5.1       # via html5lib
 webservices[django]==0.7  # via django-simple-sso
 yurl==1.0.0               # via aldryn-boilerplates, aldryn-sites
-
+httpagentparser==1.9.1
