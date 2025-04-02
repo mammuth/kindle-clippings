@@ -1,21 +1,28 @@
-version: "2"
-
 services:
   web:
-    build: "."
+    build: .
+    command: python manage.py runserver 0.0.0.0:80
+    environment:
+      DATABASE_URL: postgres://postgres@database_default:5432/db
+    env_file: .env-local
     links:
-      - "db:postgres"
+      - "database_default"
     ports:
       - "8000:80"
     volumes:
       - ".:/app:rw"
       - "./data:/data:rw"
-    command: python manage.py runserver 0.0.0.0:80
-    env_file: .env-local
 
-  db:
-    image: postgres:9.6-alpine
+  database_default:
+    image: postgres:15.7-alpine
     environment:
       POSTGRES_DB: "db"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_PASSWORD: "postgres"
+      SERVICE_MANAGER: "fsm-postgres"
     volumes:
       - ".:/app:rw"
+      - "database-default:/var/lib/postgresql/data/"
+
+volumes:
+  database-default:
