@@ -35,6 +35,23 @@
             </div>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h1>{% trans "Export" %}</h1>
+        </div>
+        <div class="card-body">
+            <p>
+                {% trans "Export matching clippings as Markdown" %}
+            </p>
+            <form method="get" action="{% url 'clipping_manager:export-clippings' %}" target="_blank">
+                {% for key, value in request.GET.items %}
+                  <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endfor %}
+                <button type="submit" class="btn btn-text">{% trans "Export" %} ({{ filter.qs.count }})</button>
+              </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block sidebar_main %}

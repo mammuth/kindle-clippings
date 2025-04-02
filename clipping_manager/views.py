@@ -54,6 +54,41 @@ class ClippingsBrowseView(ListView):
         self.filter = ClippingFilter(self.request.GET, request=self.request, queryset=qs)
         return self.filter.qs.distinct()
 
+class ClippingsExportView(View):
+    def get(self, request, *args, **kwargs):
+        filtered = self.get_queryset(request)
+
+        clippings_per_book = {}
+        misc_clippings = []
+
+        for clip in filtered:
+            if clip.book:
+                clippings_per_book.setdefault(clip.book.title, []).append(clip)
+            else:
+                misc_clippings.append(clip)
+
+        lines = ["# Quotes Collection"]
+
+        for book_name, quotes in clippings_per_book.items():
+            lines.append(f"\n## Book: *{book_name}*\n")
+            for q in quotes:
+                lines.append(q.as_markdown())
+
+        if misc_clippings:
+            lines.append("## Miscellaneous\n")
+            for q in misc_clippings:
+                lines.append(q.as_markdown())
+
+        markdown_content = "\n".join(lines)
+        response = HttpResponse(markdown_content, content_type="text/markdown; charset=utf-8")
+        response['Content-Disposition'] = 'attachment; filename="kindle-clippings-export.md"'
+        return response
+
+    def get_queryset(self, request):
+        qs = Clipping.objects.select_related('book').for_user(user=request.user)
+        self.filter = ClippingFilter(request.GET, request=request, queryset=qs)
+        return self.filter.qs.distinct()
+
 class DeleteClipping(View):
     http_method_names = ['post']
 
