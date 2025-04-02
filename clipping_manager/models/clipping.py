@@ -103,3 +103,14 @@ class Clipping(models.Model):
         elif self.book:
             return self.book.author_name or ''
         return ''
+
+    def as_markdown(self) -> str:
+        md = f"> \"{self.content}\""
+
+        author_name = self.get_author_name()
+        if author_name:
+            md += f"— {author_name}\n"
+        else:
+            md += "\n"
+        
+        return md
