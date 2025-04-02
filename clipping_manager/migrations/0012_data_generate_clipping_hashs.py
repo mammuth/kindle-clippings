@@ -3,6 +3,8 @@ from django.db import migrations, transaction
 
 
 def gen_content_hash(apps, schema_editor):
+    return # Changed this migration after it ran on production. It's not runnable on a fresh project without modification.
+
     from clipping_manager.models import Clipping
     # Clipping = apps.get_model('clipping_manager', 'Clipping')
     for c in Clipping.objects.all():
