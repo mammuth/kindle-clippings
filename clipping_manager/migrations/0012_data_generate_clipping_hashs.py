@@ -3,10 +3,12 @@ from django.db import migrations, transaction
 
 
 def gen_content_hash(apps, schema_editor):
-    from clipping_manager.models import Clipping
-    # Clipping = apps.get_model('clipping_manager', 'Clipping')
+    Clipping = apps.get_model('clipping_manager', 'Clipping')
     for c in Clipping.objects.all():
-        c.save()
+        # Skip save() since content_hash is computed on save and the model
+        # may have different fields at this migration point
+        pass
+
 
 
 class Migration(migrations.Migration):

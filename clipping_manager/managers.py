@@ -23,6 +23,10 @@ class ClippingQuerySet(models.QuerySet):
         except ValueError:
             return self.none()
 
+    def for_email_delivery(self):
+        """Filter clippings to only include books marked for email delivery"""
+        return self.filter(book__include_in_email=True)
+
 
 class ExistingClippingsManager(models.Manager):
     

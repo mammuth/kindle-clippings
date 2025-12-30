@@ -26,3 +26,33 @@ class UploadTextClippings(forms.Form):
     author = forms.CharField(
         required=False,
     )
+
+
+class BookEmailInclusionForm(forms.Form):
+    """Form to toggle which books are included in email deliveries"""
+    
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from clipping_manager.models import Book
+        
+        # Get user's books that have clippings, sorted by include_in_email (included first) then title
+        books = Book.objects.for_user(user).not_empty().order_by('-include_in_email', 'title')
+        
+        for book in books:
+            field_name = f'book_{book.id}'
+            self.fields[field_name] = forms.BooleanField(
+                label=str(book),
+                required=False,
+                initial=book.include_in_email,
+                widget=forms.CheckboxInput(attrs={'class': 'book-toggle-checkbox'})
+            )
+    
+    def save(self, user):
+        """Save the book inclusion settings"""
+        from clipping_manager.models import Book
+        
+        for field_name, value in self.cleaned_data.items():
+            if field_name.startswith('book_'):
+                book_id = int(field_name.replace('book_', ''))
+                Book.objects.filter(id=book_id, user=user).update(include_in_email=value)
+

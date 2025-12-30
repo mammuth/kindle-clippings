@@ -264,6 +264,26 @@ class EmailDeliveryView(SuccessMessageMixin, UpdateView):
         delivery, _ = EmailDelivery.objects.get_or_create(user=self.request.user)
         return delivery
 
+    def get_context_data(self, **kwargs):
+        ctx = super(EmailDeliveryView, self).get_context_data(**kwargs)
+        from clipping_manager.forms import BookEmailInclusionForm
+        ctx['book_form'] = BookEmailInclusionForm(user=self.request.user)
+        ctx['has_books'] = Book.objects.for_user(self.request.user).not_empty().exists()
+        return ctx
+
+    def post(self, request, *args, **kwargs):
+        # Check if this is a book toggle submission
+        if 'save_book_settings' in request.POST:
+            from clipping_manager.forms import BookEmailInclusionForm
+            book_form = BookEmailInclusionForm(user=request.user, data=request.POST)
+            if book_form.is_valid():
+                book_form.save(user=request.user)
+                messages.success(request, _('Updated book email settings!'))
+            return redirect(self.success_url)
+        
+        # Otherwise, handle the normal email settings form
+        return super(EmailDeliveryView, self).post(request, *args, **kwargs)
+
 class RandomClippingView(TemplateView):
     template_name = 'clipping_manager/random_clipping.html'
 
