@@ -21,7 +21,7 @@ from django.views.generic.base import View
 
 from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
 from clipping_manager.filters import ClippingFilter
-from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings
+from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings, BookEmailInclusionForm
 from clipping_manager.models import Clipping, Book, MyClippingsFile
 from clipping_manager.models.email_delivery import EmailDelivery
 
@@ -266,15 +266,12 @@ class EmailDeliveryView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(EmailDeliveryView, self).get_context_data(**kwargs)
-        from clipping_manager.forms import BookEmailInclusionForm
         ctx['book_form'] = BookEmailInclusionForm(user=self.request.user)
-        ctx['has_books'] = Book.objects.for_user(self.request.user).not_empty().exists()
+        ctx['has_books'] = Book.objects.for_user(self.request.user).exists()
         return ctx
 
     def post(self, request, *args, **kwargs):
-        # Check if this is a book toggle submission
         if 'save_book_settings' in request.POST:
-            from clipping_manager.forms import BookEmailInclusionForm
             book_form = BookEmailInclusionForm(user=request.user, data=request.POST)
             if book_form.is_valid():
                 book_form.save(user=request.user)
