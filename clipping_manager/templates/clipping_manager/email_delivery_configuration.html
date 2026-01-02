@@ -2,11 +2,39 @@
 {% load crispy_forms_tags i18n cms_tags %}
 
 {% block content %}
-    {% static_placeholder "above_email_delivery" %}
+{% static_placeholder "above_email_delivery" %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="{% trans "Save" %}" class="btn btn-primary mt-4">
-    </form>
+<h4>{% trans "Email Delivery Settings" %}</h4>
+<p class="text-muted">{% trans "Configure how often you want to receive random highlights by email." %}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="{% trans 'Save Settings' %}" class="btn btn-primary mt-4">
+</form>
+
+{% if has_books %}
+<hr class="my-5">
+
+<h4>{% trans "Books Included in Email Delivery" %}</h4>
+<p class="text-muted">{% trans "Toggle which books should be included when sending random highlights. Unchecked books will be excluded from your email deliveries." %}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="book-list">
+        {% for field in book_form %}
+        <div class="form-check mb-2">
+            {{ field }}
+            <label class="form-check-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+            </label>
+        </div>
+        {% empty %}
+        <p class="text-muted">{% trans "No books found. Upload some clippings first!" %}</p>
+        {% endfor %}
+    </div>
+    <input type="hidden" name="save_book_settings" value="1">
+    <input type="submit" value="{% trans 'Save Book Settings' %}" class="btn btn-secondary mt-4">
+</form>
+{% endif %}
 {% endblock %}

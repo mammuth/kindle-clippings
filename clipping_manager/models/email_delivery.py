@@ -70,7 +70,7 @@ class EmailDelivery(models.Model):
         # ToDo: Use external service?
         if self.user.email:
             try:
-                random_clipping = Clipping.objects.for_user(self.user).random(limit=self.number_of_highlights)
+                random_clipping = Clipping.objects.for_user(self.user).for_email_delivery().random(limit=self.number_of_highlights)
 
                 if not random_clipping:
                     return False

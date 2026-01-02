@@ -28,6 +28,12 @@ class Book(models.Model):
         blank=True,
     )
 
+    include_in_email = models.BooleanField(
+        verbose_name=_('Include in email delivery'),
+        default=True,
+        help_text=_('If disabled, highlights from this book will not be sent in email deliveries'),
+    )
+
     class Meta:
         verbose_name = _('Book')
         verbose_name_plural = _('Books')
