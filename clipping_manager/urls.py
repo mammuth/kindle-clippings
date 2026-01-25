@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from clipping_manager.views import UploadMyClippingsFileView, RandomClippingView, RandomClippingFullscreenView, \
     DashboardView, AdminStatisticsView, EmailDeliveryView, DailyEmailDeliveryView, BiweeklyEmailDeliveryView, \
     WeeklyEmailDeliveryView, ClippingsBrowseView, UploadTextFileClippingsView, PersonalStatisticsView, BooksView, \
-    DeleteClipping, ClippingsExportView
+    DeleteClipping, ClippingsExportView, KoReaderSyncView
 
 urlpatterns = [
     url(r'^$', login_required(DashboardView.as_view()), name='dashboard'),
@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^cron/daily/$', DailyEmailDeliveryView.as_view(), name='cron-daily'),
     url(r'^cron/weekly/$', WeeklyEmailDeliveryView.as_view(), name='cron-weekly'),
     url(r'^cron/biweekly/$', BiweeklyEmailDeliveryView.as_view(), name='cron-biweekly'),
+    
+    # API
+    url(r'^api/koreader/sync/$', KoReaderSyncView.as_view(), name='koreader-sync'),
 ]

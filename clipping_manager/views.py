@@ -20,6 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View
 
 from clipping_manager.clipping_parser import kindle_clipping_parser, plaintext_parser
+from clipping_manager.services import import_clippings_for_user
 from clipping_manager.filters import ClippingFilter
 from clipping_manager.forms import UploadKindleClippingsForm, UploadTextClippings, BookEmailInclusionForm
 from clipping_manager.models import Clipping, Book, MyClippingsFile
@@ -30,6 +31,12 @@ logger = logging.getLogger(__name__)
 
 class DashboardView(TemplateView):
     template_name = 'clipping_manager/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(DashboardView, self).get_context_data(**kwargs)
+        token, _ = SyncToken.objects.get_or_create(user=self.request.user)
+        ctx['sync_token'] = token.token
+        return ctx
 
 class ClippingsBrowseView(ListView):
     template_name = 'clipping_manager/browse.html'
@@ -144,30 +151,7 @@ class UploadMyClippingsFileView(FormView):
             )
         else:
             user = self.request.user
-            num_books = 0
-            num_clippings = 0
-            errors = 0
-            for book, clippings in clips.items():
-                book, created = Book.objects.get_or_create(
-                    user=user,
-                    title=book,
-                )
-                if created:
-                    num_books += 1
-                try:
-                    for clip_content in clippings:
-                        __, created = Clipping.objects.get_or_create(
-                            user=user,
-                            content=clip_content,
-                            defaults={
-                                'book': book,
-                            }
-                        )
-                        if created:
-                            num_clippings += 1
-                except Exception as e:
-                    errors += 1
-                    logger.error(f'Error importing a clipping.', exc_info=True)
+            num_books, num_clippings, errors = import_clippings_for_user(user, clips)
 
             if errors > 0:
                 messages.add_message(
@@ -211,36 +195,26 @@ class UploadTextFileClippingsView(FormView):
 
         clips = plaintext_parser.get_clips_from_text(clippings_file_content, http_agent)
         user = self.request.user
-        num_clippings = 0
-
-        try:
-            book_title = form.cleaned_data.get('book_title', None)
-            book = None
-            if book_title:
-                book, __ = Book.objects.get_or_create(
-                    user=user,
-                    title=book_title,
-                    defaults={
-                        'author_name': form.cleaned_data.get('author', None),
-                    },
-                )
-
-            for clip_content in clips:
-                __, created = Clipping.objects.get_or_create(
-                    user=user,
-                    content=clip_content,
-                    defaults={
-                        'book': book,
-                    }
-                )
-                if created:
-                    num_clippings += 1
-        except Exception as e:
-            logger.error(f'Error processing a clippings file.', exc_info=True)
+        
+        book_title = form.cleaned_data.get('book_title', None)
+        author = form.cleaned_data.get('author', None)
+        
+        # Prepare data for service
+        clips_data = []
+        for content in clips:
+            clips_data.append({
+                'title': book_title or 'Untitled',
+                'text': content,
+                'author': author
+            })
+            
+        num_books, num_clippings, errors = import_clippings_for_user(user, clips_data)
+        
+        if errors > 0:
             messages.add_message(
                 self.request,
                 messages.ERROR,
-                _('Couldn\'t process all clippings. The developer is informed, please try again in a couple of days!')
+                _('Some clippings could not be imported')
             )
         else:
             messages.add_message(
@@ -430,3 +404,44 @@ class BiweeklyEmailDeliveryView(AbstractSendEmailDeliveriesView):
 class WeeklyEmailDeliveryView(AbstractSendEmailDeliveriesView):
     def get_queryset(self):
         return super(WeeklyEmailDeliveryView, self).get_queryset().filter(interval=EmailDelivery.INTERVAL_WEEKLY)
+
+
+import json
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from clipping_manager.models import SyncToken
+
+@method_decorator(csrf_exempt, name='dispatch')
+class KoReaderSyncView(View):
+    def post(self, request, *args, **kwargs):
+        # Authentication
+        auth_header = request.META.get('HTTP_AUTHORIZATION', '')
+        if not auth_header.startswith('Token '):
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        
+        token_str = auth_header.split(' ')[1]
+        try:
+            token = SyncToken.objects.get(token=token_str)
+        except SyncToken.DoesNotExist:
+            return JsonResponse({'error': 'Invalid token'}, status=401)
+        
+        user = token.user
+        
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            
+        # KOReader might send a single object or a list
+        if isinstance(data, dict):
+            data = [data]
+            
+        num_books, num_clippings, errors = import_clippings_for_user(user, data)
+        
+        return JsonResponse({
+            'success': True,
+            'books_created': num_books,
+            'clippings_created': num_clippings,
+            'errors': errors
+        })

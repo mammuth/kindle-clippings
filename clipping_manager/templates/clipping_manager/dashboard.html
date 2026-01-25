@@ -65,6 +65,18 @@
 
             <div class="card">
                 <div class="card-header">
+                    <h2>KOReader Integration</h2>
+                </div>
+                <div class="card-body">
+                    <p>Automatically upload highlights from your KOReader device.</p>
+                    <p><strong>Sync Token:</strong> <code id="sync-token">{{ sync_token }}</code></p>
+                    <p><strong>API Endpoint:</strong> <code>{{ request.scheme }}://{{ request.get_host }}{% url 'clipping_manager:koreader-sync' %}</code></p>
+                    <p><small class="text-muted">Use this token and endpoint in your KOReader sync plugin.</small></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
                     <h2>Random Quote on Page</h2>
                 </div>
                 <div class="card-body">
