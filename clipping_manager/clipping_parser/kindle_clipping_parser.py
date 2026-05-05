@@ -13,25 +13,33 @@ BOUNDARY = u"==========\r\n"
 
 def _get_sections(file_content: str):
     content = file_content.replace(u'\ufeff', u'')
-    return content.split(BOUNDARY)
+    if BOUNDARY in content:
+        return content.split(BOUNDARY)
+
+    # Fallback: split Kindle section boundaries with any newline style.
+    return re.split(r'={10}\s*(?:\r\n|\n|\r)', content)
 
 
 def _get_clip(section: str) -> Union[None, Dict[str, Union[str, int]]]:
 # def _get_clip(section: str):
     clip = {}
 
-    lines = [l for l in section.split(u'\r\n') if l]
-    if len(lines) != 3:
+    lines = [l.strip() for l in section.splitlines() if l.strip()]
+    if len(lines) < 3:
         return None
 
     clip['book'] = lines[0]
-    match = re.search(r'(\d+)-\d+', lines[1])
+    # Kindle location range, e.g. "location 123-124".
+    match = re.search(r'(\d+)\s*-\s*\d+', lines[1])
+    if not match:
+        # Kindle page format, e.g. "on page 40".
+        match = re.search(r'\bpage\s+(\d+)\b', lines[1], re.IGNORECASE)
     if not match:
         return None
     position = match.group(1)
 
     clip['position'] = int(position)
-    clip['content'] = lines[2]
+    clip['content'] = '\n'.join(lines[2:])
 
     return clip
 
