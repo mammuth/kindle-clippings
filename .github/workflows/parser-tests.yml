@@ -23,5 +23,8 @@ jobs:
       - name: Start database
         run: docker compose up -d database_default
 
+      - name: Wait for database readiness
+        run: docker compose exec -T database_default sh -c 'until pg_isready -U postgres -d db; do sleep 1; done'
+
       - name: Run full Django test suite
         run: docker compose run --rm web python manage.py test
