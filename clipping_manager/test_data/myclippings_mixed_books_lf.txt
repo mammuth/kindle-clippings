@@ -1,0 +1,15 @@
+Book One (Author A)
+- Your highlight on page 10 | Added on Monday, January 1, 2024 10:00:00 AM
+
+First quote.
+==========
+Book Two (Author B)
+- Your Highlight on Location 20-21 | Added on Monday, January 1, 2024 10:01:00 AM
+
+Second quote.
+==========
+Book One (Author A)
+- Your highlight on page 11 | Added on Monday, January 1, 2024 10:02:00 AM
+
+Third quote.
+==========
