@@ -1,0 +1,30 @@
+name: Test Suite
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  full-test-suite:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare env file
+        run: cp .env-local.example .env-local
+
+      - name: Build containers
+        run: docker compose build
+
+      - name: Start database
+        run: docker compose up -d database_default
+
+      - name: Wait for database readiness
+        run: docker compose exec -T database_default sh -c 'until pg_isready -U postgres -d db; do sleep 1; done'
+
+      - name: Run full Django test suite
+        run: docker compose run --rm web python manage.py test
