@@ -1,11 +1,10 @@
 import os
-
-from django.test import TestCase
+import unittest
 
 from clipping_manager.clipping_parser.kindle_clipping_parser import get_clips_from_text
 
 
-class KindleClippingParserTests(TestCase):
+class KindleClippingParserTests(unittest.TestCase):
 
     TEST_FILES = [
         ('myclippings_koreader_lf.txt', 1, 3),
