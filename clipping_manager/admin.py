@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import query
 
-from clipping_manager.models import Clipping, Book, EmailDelivery, MyClippingsFile
+from clipping_manager.models import Clipping, Book, DonationConfig, EmailDelivery, MyClippingsFile
 
 
 @admin.register(Clipping)
@@ -29,6 +29,11 @@ class EmailDeliveryAdmin(admin.ModelAdmin):
     search_fields = ('user', 'user__email')
     list_filter = ('user', )
     list_display = ('user', 'interval', 'last_delivery', )
+
+
+@admin.register(DonationConfig)
+class DonationConfigAdmin(admin.ModelAdmin):
+    list_display = ('request_frequency', 'goal_amount', 'progress_percentage', )
 
 @admin.register(MyClippingsFile)
 class MyClippingsFileAdmin(admin.ModelAdmin):

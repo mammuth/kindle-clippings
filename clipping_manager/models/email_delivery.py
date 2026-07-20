@@ -8,7 +8,8 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from clipping_manager.models import Clipping
+from clipping_manager.models.clipping import Clipping
+from clipping_manager.models.donation_config import DonationConfig
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,12 @@ class EmailDelivery(models.Model):
         null=True,
     )
 
+    donation_request_last_sent_at = models.DateTimeField(
+        verbose_name=_('Donation request last sent at'),
+        blank=True,
+        null=True,
+    )
+
 
     class Meta:
         verbose_name = 'Email delivery'
@@ -75,8 +82,18 @@ class EmailDelivery(models.Model):
                 if not random_clipping:
                     return False
 
+                donation_config = DonationConfig.current()
+                show_donation_request = (
+                    donation_config.should_show_request(self.donation_request_last_sent_at)
+                    if donation_config else False
+                )
+
                 rendered_highlight_mail = render_to_string('clipping_manager/email/random_clipping_mail.html', {
-                    'clippings': random_clipping
+                    'clippings': random_clipping,
+                    'donation_email_content': donation_config.email_content if donation_config else '',
+                    'show_donation_request': show_donation_request,
+                    'donation_goal_amount': donation_config.goal_amount if donation_config else '',
+                    'donation_progress_percentage': donation_config.progress_percentage if donation_config else 0,
                 })
                 msg = EmailMessage(
                     _('Your Daily Kindle Highlights'),
@@ -92,6 +109,8 @@ class EmailDelivery(models.Model):
             else:
                 # Update last_delivery flag on model instance
                 self.last_delivery = timezone.now()
+                if show_donation_request:
+                    self.donation_request_last_sent_at = self.last_delivery
                 self.save()
                 return True
         return False

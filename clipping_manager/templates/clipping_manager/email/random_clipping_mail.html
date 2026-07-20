@@ -20,9 +20,6 @@
         .headline {
             text-align: center;
         }
-        .clipping-container {
-            margin-bottom: 75px;
-        }
         .clipping-content {
             text-align: center;
             font-size: 18px;
@@ -40,23 +37,47 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="headline">Your Kindle Highlights Of Today</h1>
-        <br>
-        {% for clipping in clippings %}
-            <div class="clipping-container">
-                <p class="clipping-content">{{ clipping.content }}</p>
-                <span class="clipping-book text-secondary">&mdash; {{ clipping.book.title }}</span>
-            </div>
-        {% endfor %}
-        <footer>
-            <a href="https://www.buymeacoffee.com/mammuth" target="_blank" class="my-3"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+        <div style="padding-bottom: 32px;">
+            <h1 class="headline">Your Kindle Highlights Of Today</h1>
+            {% for clipping in clippings %}
+                <div style="{% if not forloop.last %}margin-bottom: 40px;{% endif %}">
+                    <p class="clipping-content">{{ clipping.content }}</p>
+                    <span class="clipping-book text-secondary">&mdash; {{ clipping.book.title }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div style="padding: 40px 0; border-top: 1px solid #EFEFEF; text-align: center;">
+            {% if show_donation_request %}
+            {% if donation_email_content %}
+                <div style="text-align: center; line-height: 23px; margin-bottom: 28px;">{{ donation_email_content|safe }}</div>
+            {% endif %}
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 0 0 28px 0; border-collapse: collapse;">
+                <tr>
+                    <td style="background-color: #EFEFEF; border-radius: 8px; height: 14px; line-height: 14px; font-size: 0;">
+                        <table role="presentation" width="{{ donation_progress_percentage }}%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                            <tr>
+                                <td style="background-color: #FF813F; border-radius: 8px; height: 14px; line-height: 14px; font-size: 0;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 17px; line-height: 24px; color: #7C7C7C; padding-top: 10px; text-align: center;">
+                        <strong style="color: #333333;">{{ donation_progress_percentage }}%</strong> {% trans "of" %} {{ donation_goal_amount }} {% trans "goal" %}
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
+            <a href="https://reading-notes.com/en/support/" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="display: inline-block; height: auto !important; width: auto !important; border: 0;" ></a>
+        </div>
+
+        <footer style="padding-top: 32px; border-top: 1px solid #EFEFEF;">
             <div class="text-secondary">
                 {% trans "You can configure your delivery options on" %} <a
-                    href="https://kindle-clippings.us.aldryn.io">https://kindle-clippings.us.aldryn.io</a>
+                    href="https://reading-notes.com/">https://reading-notes.com/</a>
             </div>
         </footer>
     </div>
 </body>
 </html>
-
-
