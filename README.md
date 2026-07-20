@@ -19,10 +19,15 @@ This is a pretty simple django application with a good'ol HTML frontend generate
 
 #### Project setup
 1. Copy environment file: `cp .env-local.example .env-local`
-2. Start containers: `docker-compose up --build`
-3. Run migrations: `docker-compose run --rm web python manage.py migrate`
-4. Create superuser: `docker-compose run --rm web python manage.py createsuperuser`
-5. Configure Django CMS apphook (see below)
+2. Build the web image: `docker compose build web`
+3. Start the database: `docker compose up -d database_default`
+4. Wait for PostgreSQL: `docker compose exec -T database_default sh -c 'until pg_isready -U postgres -d db; do sleep 1; done'`
+5. Run migrations: `docker compose run --rm web python manage.py migrate`
+6. Create superuser: `docker compose run --rm web python manage.py createsuperuser`
+7. Start the server: `docker compose up web`
+8. Configure Django CMS apphook (see below)
+
+If you started `web` before running migrations and see `relation "django_site" does not exist`, run the migration command above and restart `web`.
 
 #### Django CMS Apphook Configuration
 After starting the server, you need to configure the Django CMS apphook for the app to work:
@@ -37,7 +42,7 @@ After starting the server, you need to configure the Django CMS apphook for the 
 8. The app is now accessible at the page URL (e.g., `/en/reading-notes/`)
 
 #### Other commands
-- manage.py commands can be executed as follows: `docker-compose run --rm web python manage.py migrate`
+- manage.py commands can be executed as follows: `docker compose run --rm web python manage.py migrate`
 - Optionally configure the `EMAIL_URL` environment variable when you want to send mails
 
 
