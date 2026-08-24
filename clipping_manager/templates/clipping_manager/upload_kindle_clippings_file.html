@@ -4,7 +4,8 @@
 {% block content %}
     {% static_placeholder "above_upload" %}
 
-    <form action="{% url "clipping_manager:upload" %}" method="post"  enctype="multipart/form-data">
+    <form action="{% url "clipping_manager:upload" %}" method="post"  enctype="multipart/form-data"
+          onsubmit="window.rybbit && window.rybbit.event('clippings_file_upload')">
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" value="{% trans "Upload" %}" class="btn btn-primary mt-4">

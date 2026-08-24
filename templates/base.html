@@ -22,19 +22,7 @@
     {% render_block "css" %}
     {{ ALDRYN_SNAKE.render_head }}
 
-      <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43065633-23"></script>
-      <script>
-          window.dataLayer = window.dataLayer || [];
-
-          function gtag() {
-              dataLayer.push(arguments);
-          }
-
-          gtag('js', new Date());
-
-          gtag('config', 'UA-43065633-23', {'anonymize_ip': true});
-      </script>
+    {% include "includes/analytics.html" %}
 
   </head>
   <body>

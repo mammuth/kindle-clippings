@@ -1,0 +1,15 @@
+<script
+    src="https://rybbit.max-muth.de/api/script.js"
+    data-site-id="cf8fff1379e5"
+    defer
+></script>
+{% if request.user.is_authenticated %}
+<script>
+    window.addEventListener("load", function () {
+        if (!window.rybbit) return;
+        window.rybbit.identify("{{ request.user.pk|escapejs }}", {
+            email: "{{ request.user.email|escapejs }}"
+        });
+    });
+</script>
+{% endif %}
