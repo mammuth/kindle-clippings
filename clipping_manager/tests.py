@@ -38,7 +38,7 @@ class RandomClippingMailTemplateTests(SimpleTestCase):
         )
 
         self.assertIn('<title>Your Kindle Highlights</title>', html)
-        self.assertIn('<h1 class="headline">Your Kindle Highlights Of Today</h1>', html)
+        self.assertNotIn('<h1 class="headline">Your Kindle Highlights Of Today</h1>', html)
         self.assertIn('<h1>Support <strong>Kindle Clippings</strong></h1>', html)
         self.assertIn('<p>Help keep the project <em>alive</em>.</p>', html)
 
