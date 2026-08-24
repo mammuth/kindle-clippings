@@ -38,7 +38,6 @@
 <body>
     <div class="container">
         <div style="padding-bottom: 32px;">
-            <h1 class="headline">Your Kindle Highlights Of Today</h1>
             {% for clipping in clippings %}
                 <div style="{% if not forloop.last %}margin-bottom: 40px;{% endif %}">
                     <p class="clipping-content">{{ clipping.content }}</p>
