@@ -2,12 +2,15 @@ from datetime import datetime, timedelta
 from types import SimpleNamespace
 
 from django.contrib.auth import get_user_model
+from django.contrib.messages.storage.fallback import FallbackStorage
+from django.contrib.sessions.backends.db import SessionStore
 from django.core import mail
 from django.template.loader import render_to_string
-from django.test import SimpleTestCase, TestCase
+from django.test import RequestFactory, SimpleTestCase, TestCase
 from django.utils import timezone
 
 from clipping_manager.models import Book, Clipping, DonationConfig, EmailDelivery
+from clipping_manager.views import DeleteAccountView
 
 
 class RandomClippingMailTemplateTests(SimpleTestCase):
@@ -150,3 +153,36 @@ class EmailDeliveryDonationTests(TestCase):
         self.assertNotIn('Support Kindle Clippings', mail.outbox[0].body)
         self.assertNotIn('background-color: #FF813F', mail.outbox[0].body)
         self.assertIn('href="https://reading-notes.com/en/support/"', mail.outbox[0].body)
+
+
+class DeleteAccountViewTests(TestCase):
+
+    def test_deletes_user_and_all_related_data(self):
+        user = get_user_model().objects.create_user(
+            username='leaving@example.com',
+            email='leaving@example.com',
+            password='password',
+        )
+        other_user = get_user_model().objects.create_user(
+            username='staying@example.com',
+            email='staying@example.com',
+            password='password',
+        )
+        book = Book.objects.create(user=user, title='Example Book')
+        Clipping.objects.create(user=user, book=book, content='A highlighted passage.')
+        EmailDelivery.objects.create(user=user)
+        Book.objects.create(user=other_user, title='Other Book')
+
+        request = RequestFactory().post('/delete-account/')
+        request.user = user
+        request.session = SessionStore()
+        request._messages = FallbackStorage(request)
+
+        response = DeleteAccountView.as_view()(request)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(get_user_model().objects.filter(pk=user.pk).exists())
+        self.assertFalse(Book.objects.filter(user_id=user.pk).exists())
+        self.assertFalse(Clipping.objects.filter(user_id=user.pk).exists())
+        self.assertFalse(EmailDelivery.objects.filter(user_id=user.pk).exists())
+        self.assertTrue(Book.objects.filter(user=other_user).exists())
