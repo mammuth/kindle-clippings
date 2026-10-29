@@ -109,14 +109,15 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h2>Delete Account</h2>
+                    <h2>{% trans "Delete Account" %}</h2>
                 </div>
                 <div class="card-body">
-                    <p>Permanently delete your account including all your clippings, books and e-mail delivery settings. This cannot be undone.</p>
+                    <p>{% trans "Permanently delete your account including all your clippings, books and e-mail delivery settings. This cannot be undone." %}</p>
+                    {% trans "Do you really want to delete your account and all your clippings? This cannot be undone!" as delete_account_confirm %}
                     <form action="{% url 'clipping_manager:delete-account' %}" method="POST"
-                          onsubmit="return confirm('{% trans "Do you really want to delete your account and all your clippings? This cannot be undone!" %}');">
+                          onsubmit="return confirm('{{ delete_account_confirm|escapejs }}');">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete My Account</button>
+                        <button type="submit" class="btn btn-danger">{% trans "Delete My Account" %}</button>
                     </form>
                 </div>
             </div>
