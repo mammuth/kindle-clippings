@@ -5,6 +5,7 @@ from codecs import EncodedFile
 from collections import Counter
 
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import models
@@ -106,6 +107,16 @@ class DeleteClipping(View):
         # For empty books -> back to main browse page
         return redirect(reverse_lazy('clipping_manager:browse'))
         
+class DeleteAccountView(View):
+    http_method_names = ['post']
+
+    def post(self, request):
+        user = request.user
+        logout(request)
+        user.delete()  # Cascades to books, clippings and email delivery
+        messages.add_message(request, messages.SUCCESS, _('Your account and all your data have been deleted.'))
+        return redirect('/')
+
 class BooksView(ListView):
     template_name = 'clipping_manager/books.html'
     context_object_name = 'books'
